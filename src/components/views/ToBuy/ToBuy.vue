@@ -6,15 +6,28 @@
                    @click="bought(item)" />
       
       <div class="new-item">
-        <input type="text" placeholder="яйца"
+        <input type="text" placeholder="Молоко" class="new-item__value"
               @keyup.enter="add" v-model="newItem" />
+        <ui-button icon class="new-item__add">
+          <icon-add />
+        </ui-button>
       </div>
     </div>
 
-    <div class="bottom_nav">
-      <router-link :to="'/invite'">Invite</router-link>
-      <router-link :to="'/history'">History</router-link>
-      <router-link :to="'/scan'" replace>Scan</router-link>
+    <div class="gap" />
+
+    <div class="bottom-nav">
+      <router-link :to="'/invite'">
+        <ui-button icon> <icon-invite /><icon-add /> </ui-button>
+      </router-link>
+      
+      <router-link :to="'/history'">
+        <ui-button icon> <icon-history /> </ui-button>
+      </router-link>
+      
+      <router-link :to="'/scan'" replace>
+        <ui-button icon> <icon-scan /><icon-receipt /> </ui-button>
+      </router-link>
     </div>
   </ui-view>
 </template>
@@ -25,6 +38,11 @@ import { mapActions, mapState } from 'vuex'
 import UiButton from '@/src/components/core/Button/Button.vue'
 import UiView from '@/src/components/core/View/View.vue'
 import ToBuyItem from './Item.vue'
+import IconAdd from 'vue-material-design-icons/plus.vue'
+import IconInvite from 'vue-material-design-icons/account.vue'
+import IconHistory from 'vue-material-design-icons/book.vue'
+import IconScan from 'vue-material-design-icons/camera.vue'
+import IconReceipt from 'vue-material-design-icons/receipt.vue'
 
 
 export default {
@@ -68,11 +86,49 @@ export default {
   components: {
     ToBuyItem,
     UiButton,
-    UiView
+    UiView,
+
+    IconInvite,
+    IconHistory,
+    IconScan,
+    IconAdd,
+    IconReceipt
   },
 }
 </script>
 
-<style>
+<style scoped lang="sass">
+@import "~@/src/utils/vars.sass"
 
+.gap
+  flex: 1
+
+.bottom-nav
+  display: flex
+  justify-content: space-between
+
+.new-item
+  display: flex
+  width: 100%
+  margin-bottom: $space--m
+
+.new-item__add
+  border-radius: 0 $border-radius--m $border-radius--m 0
+
+.new-item__value
+  flex: 1
+  padding: $space--s
+  font-size: $font-size--m
+  border: $border-width--m solid transparent
+  border-radius: $border-radius--m 0 0 $border-radius--m  
+  background: rgba(0, 0, 0, .1)
+  transition: $transition--m
+
+  &::placeholder
+    color: rgba(0, 0, 0, .5)
+
+  &:focus
+    outline: 0
+    border-color: #bf7b30
+    background: rgba(255, 255, 255, .1)
 </style>

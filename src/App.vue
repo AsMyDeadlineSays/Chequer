@@ -10,25 +10,25 @@ export default {
 </script>
 
 <style lang="sass">
-  @import "~@/src/utils/vars.sass"
-  @import "~@/src/utils/animations.sass"
+@import "~@/src/utils/vars.sass"
+@import "~@/src/utils/animations.sass"
 
-  body, html
-    padding: 0
-    margin: 0
+body, html
+  padding: 0
+  margin: 0
+
+#app
+  display: flex
+  align-items: center
+  justify-content: center
   
-  #app
-    display: flex
-    align-items: center
-    justify-content: center
-    
-    min-height: 100vh
-    width: 100vw
-    
-    background: $color__bg--main
+  min-height: 100vh
+  width: 100vw
+  
+  background: $color--main
 
-    font-family: $font--main
-    font-size: $font-size--m
+  font-family: $font--main
+  font-size: $font-size--m
 
-  @include fade-animation("route-change")
+@include fade-animation("route-change")
 </style>
