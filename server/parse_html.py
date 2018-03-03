@@ -52,7 +52,7 @@ def main(config):
         })
 
     print(json.dumps(bill, ensure_ascii=False))
-    
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

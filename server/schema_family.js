@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const oneBuy = new mongoose.Schema({
-  name: String,
-  price: Number,
-  quantity: Number
+  valut: String,
+  amount: String,
+  price: String
 })
 
 const familySchema = new mongoose.Schema({
