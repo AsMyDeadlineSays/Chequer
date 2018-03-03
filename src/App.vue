@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    App goes here
+    <ui-heading level="1"> App goes here </ui-heading>
   </div>
 </template>
 
 <script>
-export default {
+import UiHeading from '@/src/components/core/Heading/Heading.vue'
+
+export default {  
   components: {
-    
+    UiHeading
   }
 }
 </script>

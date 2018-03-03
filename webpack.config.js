@@ -60,7 +60,7 @@ module.exports = env => {
     plugins: [
       new ExtractTextPlugin('style-[hash].css'),
       new HtmlWebpackPlugin({
-        title: 'Vue memory',
+        title: 'Foodhack',
         template: path.resolve(__dirname, './index.html'),
         filename: 'index.html',
       })
