@@ -9,7 +9,7 @@
         <input type="text" placeholder="Молоко" class="new-item__value"
               @keyup.enter="add" v-model="newItem" />
         <ui-button icon class="new-item__add">
-          <icon-add />
+          <icon-add class="svg" />
         </ui-button>
       </div>
     </div>
@@ -18,15 +18,21 @@
 
     <div class="bottom-nav">
       <router-link :to="'/invite'">
-        <ui-button icon> <icon-invite /><icon-add /> </ui-button>
+        <ui-button icon>
+          <icon-invite class="svg"/><icon-add class="svg" />
+        </ui-button>
       </router-link>
       
       <router-link :to="'/history'">
-        <ui-button icon> <icon-history /> </ui-button>
+        <ui-button icon>
+          <icon-history class="svg" />
+        </ui-button>
       </router-link>
       
       <router-link :to="'/scan'" replace>
-        <ui-button icon> <icon-scan /><icon-receipt /> </ui-button>
+        <ui-button icon>
+          <icon-scan class="svg" /><icon-receipt class="svg" /> 
+        </ui-button>
       </router-link>
     </div>
   </ui-view>
@@ -100,6 +106,9 @@ export default {
 <style scoped lang="sass">
 @import "~@/src/utils/vars.sass"
 
+.svg
+  fill: $color--accent
+
 .view
   max-width: 960px
 
@@ -114,26 +123,31 @@ export default {
   display: flex
   width: 100%
   margin-bottom: $space--m
+  background: $darken
+  border-radius: $border-radius--m
 
 .new-item__add
-  border-radius: 0 $border-radius--m $border-radius--m 0
+  border-radius: $border-radius--m
 
 .new-item__value
   flex: 1
   padding: $space--s
+  padding-left: $space--m
   font-size: $font-size--m
   border: $border-width--m solid transparent
-  border-radius: $border-radius--m 0 0 $border-radius--m  
-  background: rgba(0, 0, 0, .1)
+  border-radius: $border-radius--m
+  background: transparent
   transition: $transition--m
+  min-width: 0
+  width: 100%
 
   &::placeholder
     color: rgba(0, 0, 0, .5)
 
   &:focus
     outline: 0
-    border-color: #bf7b30
-    background: rgba(255, 255, 255, .1)
+    // border-color: $color--accent
+    background: rbga($color--accent, .1)
 
 @media all and (min-width: 600px)
   .bottom-nav

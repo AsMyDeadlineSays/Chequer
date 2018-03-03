@@ -18,7 +18,7 @@
     <div class="gap" />
 
     <router-link :to="'/'" replace>
-      <ui-button icon> <icon-back /> </ui-button>
+      <ui-button icon> <icon-back class='back-icon' /> </ui-button>
     </router-link>
   </ui-view>
 </template>
@@ -66,7 +66,7 @@ export default {
   margin-bottom: $space--l
   background: $color--white
   box-shadow: $box-shadow--m
-  border-radius: $border-radius--m
+  border-radius: $border-radius--s
 
 .tip
   // color: $color--white
@@ -78,9 +78,12 @@ export default {
   width: 100%
   max-width: 296px
   padding: $space--s
-  background: rgba(0, 0, 0, .05)
+  background: $darken
   border-radius: $border-radius--m
 
 .gap
   flex: 1
+
+.back-icon
+  fill: $color--accent
 </style>

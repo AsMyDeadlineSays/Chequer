@@ -38,13 +38,13 @@
     transition: 0.15s ease
 
 .icon
-  background: rgba(0, 0, 0, .1)
+  background: $darken
   // border-radius: 50%
   padding: $space--s
   height: $space--xl
 
   &:hover
-    border-color: #bf7b30
-    background: rgba(255, 255, 255, .1)
+    border-color: $color--accent
+    background: $lighten
   // width: $space--l * 2
 </style>
