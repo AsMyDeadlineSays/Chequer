@@ -1,4 +1,4 @@
-export const hydrate = ({commit}, query) => new Promise((resolve, reject) => {
+export const hydrate = ({ commit, rootState }, query) => new Promise((resolve, reject) => {
   commit('parsed', query)
   const core = query.split('&')
                  .filter(s => s.startsWith('fp') || s.startsWith('s'))
@@ -9,7 +9,10 @@ export const hydrate = ({commit}, query) => new Promise((resolve, reject) => {
     headers: new Headers({
       'Content-Type': 'application/json',
     }),
-    body: JSON.stringify({ query: core })
+    body: JSON.stringify({ 
+      family: rootState.family,
+      query: core
+    })
   })
     .then(req => req.json())
     .then(data => {
