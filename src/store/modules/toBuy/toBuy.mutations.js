@@ -1,5 +1,8 @@
+const simplify = str => str.toLowerCase().trim()
+
 export const add = (state, item) => {
-  const existing = state.items.find(x => x.value === item.value)
+  const target = simplify(item.value)
+  const existing = state.items.find(x => simplify(x.value) === target)
 
   if(existing) existing.amount += item.amount
   else state.items.push(item)

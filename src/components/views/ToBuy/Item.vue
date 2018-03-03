@@ -1,5 +1,5 @@
 <template>
-  <div onClick="$emit('click')" class="to-buy-item">
+  <div @click="$emit('click')" class="to-buy-item">
     {{value}}
     <span v-if="amount > 1"> x {{amount}} </span>
   </div>  
