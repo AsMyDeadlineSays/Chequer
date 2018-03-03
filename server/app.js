@@ -1,3 +1,4 @@
+//REQUIRES FOREIGN
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
@@ -8,12 +9,16 @@ const bash = util.promisify(require('child_process').exec)
 const fse = require('fs-extra')
 
 
+//REQUIRES LOCAL
 const setup = require('./setup/index')
 const config = require('./config')
 
+
+//GLOBAL VARs
 const parse_script = 'parse_html.py'
 const file_list = 'list.txt'
 
+//INIT
 setup().then(() => {
     console.log('listening on port:', config.appPort)
     app.listen(config.appPort)
@@ -37,6 +42,13 @@ const toBuySynchronize = async (familyId, list) => {
   })
 }
 
+//ROUTING
+//API
+// /api/family/
+// /api/family/merge
+// /api/parse-receipt
+// /api/to-buy
+// *
 app.get('/user-list', async (req, res) => {
   console.log('/user-list')
   const users = await Family.find({})
@@ -60,11 +72,13 @@ app.get('/user-list', async (req, res) => {
 // })
 
 app.put('/api/family/', (req, res) => {
+  console.log('/api/family')
   var newFamily = new Family({history: null})
   newFamily.save((err) => {
     if(err) console.log('Error while creating a user')
   })
   res.send({id: newFamily.id})
+  console.log('/api/family')
 })
 
 //post for production
@@ -80,7 +94,7 @@ app.post('/api/family/merge', async (req, res) => { //req.body.from (and not now
 })
 
 //TODO: TEST THIS SHIT
-app.post('/api/parse-receipt', (req, res) => { //req.body.family, req.body.query
+app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body.query
   console.log('/api/parse-receipt')
   if(!req.body.query){
     console.log('no query')
@@ -90,8 +104,13 @@ app.post('/api/parse-receipt', (req, res) => { //req.body.family, req.body.query
     console.log('no family')
     return;
   }
-
-  const family = Family.find({id:req.body.family})
+  let family = undefined
+  try{
+    family = await Family.find({id:req.body.family})
+  } catch(err){
+      console.error('SHIT COMES NEXT')
+      console.log(err)
+  }
   const list = family.toBuy.map(x => x.value)
   var listForFile = "";
 
@@ -111,10 +130,14 @@ app.post('/api/parse-receipt', (req, res) => { //req.body.family, req.body.query
   const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
   const pythonScript = async () => {
-    const {stdout, stderr} = await bash("python3 parse_html.py --url '"+url+"'"+" --file "+file_list)
+    const {stdout, stderr} = await bash("python3 parse_html.py --url '"+url+"'"+" --file '" + file_list + "''")
+    //scructure: [check, [newToBuyList]]
     return JSON.parse(stdout)
   }
-  let history = pythonScript()
+  let output = pythonScript()
+  let history = output[0]
+  let newToBuy = output[1]
+  toBuySynchronize(req.body.family, newToBuy)
 
   for(var i = 0; i < family.length; i++){
     family.history.push({value: history.value, amount: history.amount, price: history.price})
@@ -137,10 +160,10 @@ app.post('/api/to-buy', (req, res) => { //req.body.family req.body.list
       return;
     }
     toBuySynchronize(req.body.family, req.body.list)
+    console.log('end')
 })
 
 app.get('*', (req, res) => {
   console.log('*')
-  console.log(root)
   res.sendFile(path.join(root, 'dist/index.html'));
 });
