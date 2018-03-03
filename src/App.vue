@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <ui-heading level="1"> App goes here </ui-heading>
+    <router-view></router-view>
+    <router-link :to="'Scan'">Scan</router-link>
   </div>
 </template>
 

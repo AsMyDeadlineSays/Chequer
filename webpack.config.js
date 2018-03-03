@@ -10,6 +10,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 
+const cssLoader = ExtractTextPlugin.extract([
+  'css-loader'
+])
 const sassLoader = ExtractTextPlugin.extract([
   'css-loader',
   'sass-loader?indentedSyntax'
@@ -27,12 +30,13 @@ module.exports = env => {
   
   
     module: {
-      rules: [
-        {
+      rules: [{
+          test: /\.css$/,
+          use: cssLoader
+        }, {
           test: /\.sass$/,
           use: sassLoader
-        },
-        {
+        }, {
           test: /\.vue$/,
           loader: 'vue-loader',
           options: {
@@ -40,20 +44,17 @@ module.exports = env => {
               sass: sassLoader,
             }
           }
-        },
-        {
+        }, {
           test: /\.js$/,
           loader: 'babel-loader',
           exclude: /node_modules/
-        },
-        {
+        }, {
           test: /\.(png|jpg|gif|svg)$/,
           loader: 'file-loader',
           options: {
             name: '[name]-[hash].[ext]'
           }
-        }
-      ]
+        }]
     },
   
   
