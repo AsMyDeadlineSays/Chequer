@@ -1,6 +1,7 @@
 <template>
   <div onClick="$emit('click')">
-    {{value}} ({{amount}}-{{measure}})
+    {{value}}
+    <span v-if="amount > 1"> x {{amount}} </span>
   </div>  
 </template>
 

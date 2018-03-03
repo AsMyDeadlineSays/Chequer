@@ -8,9 +8,6 @@
       <div class="new-item">
         <input type="text" placeholder="яйца"
               @keyup.enter="add" v-model="newItem" />
-
-        <input type="text" placeholder="5 шт."
-              @keyup.enter="add" v-model="newItemAmount" />
       </div>
     </div>
 

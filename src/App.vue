@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <router-link :to="'Scan'">Scan</router-link>
   </div>
 </template>
 
