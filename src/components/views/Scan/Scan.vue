@@ -1,9 +1,10 @@
 <template>
   <ui-view black style="padding: 0">
     <qrcode-reader @decode="decode" :paused="parsed">
-      <router-link :to="'/'" replace>
-        <ui-button> Back </ui-button>
-      </router-link>
+      
+      <router-link :to="'/'" replace> <ui-button>
+        <IconBack />
+      </ui-button> </router-link>
     </qrcode-reader>
   </ui-view>  
 </template>
@@ -14,6 +15,7 @@ import { mapActions, mapState } from 'vuex'
 
 import UiButton from '@/src/components/core/Button/Button.vue'
 import UiView from '@/src/components/core/View/View.vue'
+import IconBack from 'vue-material-design-icons/menu.vue'
 
 
 export default {
@@ -30,7 +32,8 @@ export default {
   components: {
     QrcodeReader,
     UiButton,
-    UiView
+    UiView,
+    IconBack
   },
 }
 </script>

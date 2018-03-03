@@ -24,8 +24,8 @@ module.exports = env => {
     entry: './src/main.js',
     output: {
       path: path.resolve(__dirname, './dist'),
-      publicPath: '/static',
-      filename: 'app.js'
+      publicPath: '/',
+      filename: 'static/app.js'
     },
   
   
@@ -59,7 +59,7 @@ module.exports = env => {
   
   
     plugins: [
-      new ExtractTextPlugin('style-[hash].css'),
+      new ExtractTextPlugin('static/style-[hash].css'),
       new HtmlWebpackPlugin({
         title: 'Foodhack',
         template: path.resolve(__dirname, './index.html'),
@@ -70,7 +70,7 @@ module.exports = env => {
   
     resolve: {
       alias: {
-        '@':  path.resolve(__dirname),
+        '@':  path.resolve(__dirname)
       }
     },
     devServer: {
@@ -86,7 +86,7 @@ module.exports = env => {
   
   
   if (process.env.NODE_ENV === 'production') {
-    config.output.filename = 'app-[hash].js'
+    config.output.filename = 'static/app-[hash].js'
     config.devtool = false
     config.devServer = {}
   

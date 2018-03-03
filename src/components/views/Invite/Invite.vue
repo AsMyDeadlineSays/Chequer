@@ -32,7 +32,6 @@ import UiButton from '@/src/components/core/Button/Button.vue'
 import UiView from '@/src/components/core/View/View.vue'
 
 
-
 export default {
   computed: { 
     ...mapState({
