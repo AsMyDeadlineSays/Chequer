@@ -3,6 +3,37 @@ from bs4 import BeautifulSoup
 import argparse
 import json
 
+def check(from_card, bill):
+    """
+    функция проверяет есть ли слово from_card в строке из массива bill
+    возвращает index bill'a, если есть и -1 если нет
+    >>> from_card
+        'хлеб'
+    >>> bill
+        ['Хлеб 365 ДНЕЙ Дарницкий нар 650г']
+    """
+
+    for i, position in enumerate(bill):
+        if from_card in list(map(str.lower, position.split())):
+            return i
+    return -1
+
+def update_card(card, bill):
+    """
+    возвращает массив тех продуктов, которые не купили
+    """
+    not_bought = []
+    for i, product in enumerate(card):
+        index = check(product, bill)
+        # если не нашли продукт, добавляем в not_bought
+        if index == -1:
+            not_bought.append(product)
+        # если нашли, удаляем позицию из чека
+        bill.pop(index)
+        # если чек кончилась, обрываем
+        if len(bill) == 0:
+            break
+    return not_bought
 
 def getPositions(html):
     soup = BeautifulSoup(html, 'html.parser')
@@ -39,6 +70,11 @@ def getCounts(html):
 
 def main(config):
     url = config.url
+    file_name = config.file
+
+    with open(file_name, 'r') as file:
+        card = list(map(lambda s: s.replace('\n', ''), file.readlines()))
+
     page = re.get(url)
     positions = getPositions(page.content)[:-1]
     sums = getSums(page.content)
@@ -51,10 +87,14 @@ def main(config):
                     'price' : sums[i]
         })
 
+
+    new_card = update_card(card=card, bill=positions)
+    bill.append(new_card)
     print(json.dumps(bill, ensure_ascii=False))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--url', type=str)
+    parser.add_argument('--file', type=str)
     main(config=parser.parse_args())
