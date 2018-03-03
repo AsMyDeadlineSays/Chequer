@@ -12,11 +12,12 @@
     "e2e": "cypress open"
   },
   "dependencies": {
-    "static-server": "^3.0.0",
+    "get-value": "^3.0.0",
     "vue": "^2.5.11",
-    "vuex": "^3.0.1",
+    "vue-qrcode-component": "^2.1.1",
     "vue-qrcode-reader": "^0.7.1",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
   },
   "browserslist": [
     "> 1%",

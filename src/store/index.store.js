@@ -9,7 +9,9 @@ import toBuy from './modules/toBuy/toBuy.store.js'
 
 
 const store = {
-  state: {},
+  state: {
+    family: 'Hello, World!'
+  },
   modules: {
     scan,
     toBuy

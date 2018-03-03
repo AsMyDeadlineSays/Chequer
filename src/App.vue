@@ -5,12 +5,7 @@
 </template>
 
 <script>
-import UiHeading from '@/src/components/core/Heading/Heading.vue'
-
-export default {  
-  components: {
-    UiHeading
-  }
+export default {
 }
 </script>
 

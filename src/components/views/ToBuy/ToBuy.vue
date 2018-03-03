@@ -1,5 +1,5 @@
 <template>
-  <div> 
+  <ui-view class="view">
     <div>
       <to-buy-item v-for="item in items" :key="item.value"
                    v-bind="item"
@@ -16,13 +16,14 @@
       <router-link :to="'/history'">History</router-link>
       <router-link :to="'/scan'" replace>Scan</router-link>
     </div>
-  </div>
+  </ui-view>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 
 import UiButton from '@/src/components/core/Button/Button.vue'
+import UiView from '@/src/components/core/View/View.vue'
 import ToBuyItem from './Item.vue'
 
 
@@ -66,7 +67,8 @@ export default {
 
   components: {
     ToBuyItem,
-    UiButton
+    UiButton,
+    UiView
   },
 }
 </script>
