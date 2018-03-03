@@ -25,7 +25,7 @@
 
 <script>
 import QrCode from 'vue-qrcode-component'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import UiHeading from '@/src/components/core/Heading/Heading.vue'
 import UiButton from '@/src/components/core/Button/Button.vue'
@@ -35,8 +35,8 @@ import IconBack from 'vue-material-design-icons/arrow-left.vue'
 
 export default {
   computed: { 
-    ...mapState({
-      link: state => state.family
+    ...mapGetters({
+      link: 'familyLink'
     })
   },
   

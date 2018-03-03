@@ -10,8 +10,11 @@ import toBuy from './modules/toBuy/toBuy.store.js'
 
 const store = {
   state: {
-    family: 'Hello, World!'
+    family: 'new'
   },
+  actions,
+  getters,
+  mutations,
   modules: {
     scan,
     toBuy

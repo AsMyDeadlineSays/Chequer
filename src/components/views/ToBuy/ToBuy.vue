@@ -100,6 +100,9 @@ export default {
 <style scoped lang="sass">
 @import "~@/src/utils/vars.sass"
 
+.view
+  max-width: 960px
+
 .gap
   flex: 1
 
@@ -131,4 +134,10 @@ export default {
     outline: 0
     border-color: #bf7b30
     background: rgba(255, 255, 255, .1)
+
+@media all and (min-width: 600px)
+  .bottom-nav
+    justify-content: center
+    & > * + *
+      margin-left: $space--l
 </style>

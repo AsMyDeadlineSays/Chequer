@@ -6,6 +6,9 @@
 
 <script>
 export default {
+  created() {
+    this.$store.dispatch('getFamily')
+  }
 }
 </script>
 
