@@ -6,6 +6,7 @@ import * as mutations from './mutations'
 
 import scan from './modules/scan/scan.store.js'
 import toBuy from './modules/toBuy/toBuy.store.js'
+import history from './modules/history/history.store.js'
 
 
 const store = {
@@ -17,7 +18,8 @@ const store = {
   mutations,
   modules: {
     scan,
-    toBuy
+    toBuy,
+    history
   }
 }
 
