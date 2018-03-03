@@ -9,8 +9,7 @@ const store = {
   namespaced: true,
 
   state: () => ({
-    bill: [],
-    billUrl: '',
+    receipt: [],
     parsed: false,
     hydrated: false,
   }),

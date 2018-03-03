@@ -4,8 +4,11 @@ export const hydrate = ({commit}, query) => new Promise((resolve, reject) => {
                  .filter(s => s.startsWith('fp') || s.startsWith('s'))
                  .join('&')
 
-  fetch('/api/parseBill', {
+  fetch('/api/parse-receipt', {
     method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
     body: JSON.stringify({ query: core })
   })
     .then(req => req.json())

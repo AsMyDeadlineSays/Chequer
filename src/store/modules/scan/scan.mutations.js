@@ -3,7 +3,7 @@ export const parsed = (state, url) => {
 }
 
 
-export const setBill = (state, bill) => {
+export const setReceipt = (state, receipt) => {
   state.hydrated = true
-  state.bill = bill
+  state.receipt = receipt
 }
