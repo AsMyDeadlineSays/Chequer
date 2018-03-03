@@ -3,8 +3,8 @@ export const getFamily = ({commit}) => new Promise((resolve, reject) => {
     method: 'PUT'
   })
     .then(res => res.json())
-    .then(() => {
-      commit('setFamily', res.id)
+    .then(data => {
+      commit('setFamily', data.id)
       resolve()
     })
     .catch(reject)
