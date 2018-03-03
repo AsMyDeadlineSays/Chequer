@@ -5,12 +5,14 @@ import * as actions from './actions'
 import * as mutations from './mutations'
 
 import scan from './modules/scan/scan.store.js'
+import toBuy from './modules/toBuy/toBuy.store.js'
 
 
 const store = {
   state: {},
   modules: {
-    scan
+    scan,
+    toBuy
   }
 }
 
