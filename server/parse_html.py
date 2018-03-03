@@ -2,6 +2,8 @@ import requests as re
 from bs4 import BeautifulSoup
 import argparse
 import json
+import Stemmer
+stem = Stemmer.Stemmer('russian')
 
 def check(from_card, bill):
     """
@@ -14,7 +16,8 @@ def check(from_card, bill):
     """
 
     for i, position in enumerate(bill):
-        if from_card in list(map(str.lower, position.split())):
+        if stem.stemWord(from_card.lower()) in list(map(lambda s: stem.stemWord((s.lower())), 
+                                                position.split())):
             return i
     return -1
 
