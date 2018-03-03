@@ -13,6 +13,14 @@ const config = {
         dist: __dirname + '/dist'
     },
 
+    OPTIONS: {
+    user: 'admin',
+    pass: 'admin123',
+    auth: {
+        authdb: 'foodhack'
+      }
+    },
+
     logger: console,
 
     session: {}

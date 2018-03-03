@@ -1,13 +1,14 @@
 const mongoose = require('mongoose')
 
 const oneBuy = new mongoose.Schema({
-  valut: String,
+  value: String,
   amount: String,
   price: String
 })
 
 const familySchema = new mongoose.Schema({
-  history: [oneBuy]
+  history: [oneBuy],
+  toBuy: [oneBuy]
 })
 
 
