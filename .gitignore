@@ -158,3 +158,5 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+server/db/
