@@ -24,7 +24,7 @@ module.exports = env => {
     entry: './src/main.js',
     output: {
       path: path.resolve(__dirname, './dist'),
-      publicPath: '/',
+      publicPath: '/static',
       filename: 'app.js'
     },
   
@@ -86,7 +86,7 @@ module.exports = env => {
   
   
   if (process.env.NODE_ENV === 'production') {
-    config.output.filename = 'app-[hash].js'
+    config.output.filename = 'static/app-[hash].js'
     config.devtool = false
     config.devServer = {}
   
