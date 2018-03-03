@@ -59,7 +59,7 @@ module.exports = env => {
   
   
     plugins: [
-      new ExtractTextPlugin('static/style-[hash].css'),
+      new ExtractTextPlugin('style-[hash].css'),
       new HtmlWebpackPlugin({
         title: 'Foodhack',
         template: path.resolve(__dirname, './index.html'),
@@ -86,7 +86,7 @@ module.exports = env => {
   
   
   if (process.env.NODE_ENV === 'production') {
-    config.output.filename = 'static/app-[hash].js'
+    config.output.filename = 'app-[hash].js'
     config.devtool = false
     config.devServer = {}
   
