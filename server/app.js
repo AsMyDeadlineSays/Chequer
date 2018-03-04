@@ -75,11 +75,12 @@ app.get('/user-list', async (req, res) => {
 
 app.put('/api/family/', async (req, res) => {
   console.log('/api/family')
-  const newFamily = new Family({history: [], toBuy: []})
+  const newFamily = await new Family({history: [], toBuy: []})
   try{
     await newFamily.save()
     //console.log('new family with id ' + newFamily._id)
     res.send({id: newFamily._id})
+    //res.redirect('/')
   } catch(err){
       console.log(err)
   }
@@ -131,11 +132,13 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
 
   const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
-
+  let parseData = undefined;
   try{
-    const parseData = await ml.parse(url + ' ' + file_list)
+    parseData = await ml.parse(url + ' ' + file_list)
   } catch(err){
     console.log(err)
+    res.send({error: "bad receipt"})
+    return;
   }
 
   const output = JSON.parse(parseData)
