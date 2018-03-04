@@ -1,6 +1,6 @@
 import requests as re
 from bs4 import BeautifulSoup
-import argparse
+# import argparse
 import json
 from datetime import datetime
 from time import mktime
@@ -77,9 +77,9 @@ def getTime(html):
     soup = BeautifulSoup(html, 'html.parser')
     return soup.find('span', id='fld_I3304D483A').get_text()
 
-def main(config):
-    url = config.url
-    file_name = config.file
+def main(url, file_name):
+    # url = config.url
+    # file_name = config.file
 
     with open(file_name, 'r') as file:
         card = list(map(lambda s: s.replace('\n', ''), file.readlines()))
@@ -115,7 +115,9 @@ def main(config):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--url', type=str)
-    parser.add_argument('--file', type=str)
-    main(config=parser.parse_args())
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('--url', type=str)
+    # parser.add_argument('--file', type=str)
+    while True:
+        url, file_name = input().split() 
+        main(url, file_name)
