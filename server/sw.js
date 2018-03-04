@@ -6,7 +6,9 @@ self.addEventListener('install', function(event) {
     caches.open('simple-sw-v1').then(function(cache) {
       // And add resources to it
       return cache.addAll([
-        './',
+        '/',
+        '/manifest.webmanifest',
+        '/static/app-8948eec0649881cf3cf8.js'
       ]);
     })
   );
@@ -16,17 +18,22 @@ self.addEventListener('install', function(event) {
 // ServiceWorker's scope, and any request made within that
 // page
 self.addEventListener('fetch', function(event) {
-  // Calling event.respondWith means we're in charge
-  // of providing the response. We pass in a promise
-  // that resolves with a response object
-  event.respondWith(
-    // First we look for something in the caches that
-    // matches the request
-    caches.match(event.request).then(function(response) {
-      // If we get something, we return it, otherwise
-      // it's null, and we'll pass the request to
-      // fetch, which will use the network.
-      return response || fetch(event.request);
-    })
-  );
+  event.respondWith(caches.match(event.request));
 });
+
+
+// self.addEventListener('fetch', function(event) {
+//   // Calling event.respondWith means we're in charge
+//   // of providing the response. We pass in a promise
+//   // that resolves with a response object
+//   event.respondWith(
+//     // First we look for something in the caches that
+//     // matches the request
+//     caches.match(event.request).then(function(response) {
+//       // If we get something, we return it, otherwise
+//       // it's null, and we'll pass the request to
+//       // fetch, which will use the network.
+//       return response || fetch(event.request);
+//     })
+//   );
+// });
