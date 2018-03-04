@@ -21,11 +21,7 @@ body, html
   margin: 0
   height: 100%
 
-#app
-  display: flex
-  align-items: center
-  justify-content: center
-  
+#app 
   height: 100%
   width: 100vw
   
@@ -33,6 +29,8 @@ body, html
 
   font-family: $font--main
   font-size: $font-size--m
+
+  overflow-y: scroll
 
 @include fade-animation("route-change")
 </style>

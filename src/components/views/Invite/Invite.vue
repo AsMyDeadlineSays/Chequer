@@ -5,7 +5,7 @@
     </ui-heading>
     
     <div class="qr-card">
-      <qr-code :text="link" class="qr-card__code" :size="200" />
+      <qr-code :text="link" class="qr-card__code" :size="128" />
     </div>
 
     <div class="tip">

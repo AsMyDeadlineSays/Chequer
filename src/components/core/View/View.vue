@@ -22,7 +22,6 @@ export default {
   flex-direction: column
   width: 100%
   height: 100%
-  overflow-y: scroll
   padding: $space--m
   background: $color--main
 
