@@ -22,22 +22,6 @@ export const get = ({commit, rootState}) => {
   return fetch('/api/to-buy/' + rootState.family)
           .then(res => res.json())
           .then(data => {
-            data.forEach(item => commit('add', item))
+            data.forEach(item => commit('set', item))
           })
-}
-
-
-export const bought = ({commit, state, rootState}, boughtItems) => {
-  commit('bought', boughtItems)
-
-  fetch('/api/to-buy/', {
-    method: 'POST',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
-    body: JSON.stringify({ 
-      family: rootState.family,
-      list: state.items 
-    })
-  })
 }
