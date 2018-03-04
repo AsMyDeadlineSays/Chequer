@@ -91,6 +91,7 @@ export default {
     },
 
     get() {
+      console.log('get')
       if(this.$store.state.family === 'new') {
         console.log('delay')
         setTimeout(this.get, 500)
