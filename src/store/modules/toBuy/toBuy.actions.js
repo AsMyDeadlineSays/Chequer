@@ -29,4 +29,15 @@ export const get = ({commit, rootState}) => {
 
 export const bought = ({commit}, boughtItems) => {
   commit('bought', boughtItems)
+
+  fetch('/api/to-buy/', {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({ 
+      family: rootState.family,
+      list: state.items 
+    })
+  })
 }
