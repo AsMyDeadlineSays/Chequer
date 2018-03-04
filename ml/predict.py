@@ -1,18 +1,16 @@
-import sys
 import pickle
 import os
 from json import dumps
-from sklearn.linear_model import SGDClassifier
-from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import CountVectorizer
 
-args = sys.argv
-
-to_pred = ' '.join(args[1:])
-
-to_pred = to_pred.split('|')
-
-f = open(os.path.realpath(__file__)[:-10] + 'classifier.pk', 'rb')
+f = open(os.path.dirname('predict.py')+'classifier.pk', 'rb')
 clf = pickle.load(f)
-
-print(*clf.predict(to_pred))
+a = 0
+while a!=-1:
+    to_pred = input()
+    try:
+        a = int(to_pred)
+    except:
+        pass
+    to_pred = to_pred.split('|')
+    if not a:
+        print(*clf.predict(to_pred))
