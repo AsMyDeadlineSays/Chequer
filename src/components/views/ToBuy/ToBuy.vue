@@ -52,7 +52,7 @@ import IconReceipt from 'vue-material-design-icons/receipt.vue'
 
 
 export default {
-  сreated() {
+  created() {
     this.$store.dispatch('toBuy/get')
   },
   
