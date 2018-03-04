@@ -118,6 +118,7 @@ if __name__ == '__main__':
     # parser = argparse.ArgumentParser()
     # parser.add_argument('--url', type=str)
     # parser.add_argument('--file', type=str)
+    print('up')
     while True:
         url, file_name = input().split() 
         main(url, file_name)
