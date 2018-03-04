@@ -142,7 +142,7 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
     const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
     const pythonScript = async () => {
-      const {stdout, stderr} = await bash("python3 parse_html.py --url '"+url+"'"+" --file '" + file_list + "''")
+      const {stdout, stderr} = await bash('python3', ['parse_html.py', `"${url}" --file "${file_list}"`])
       //scructure: [check, [newToBuyList]]
       return JSON.parse(stdout)
     }
