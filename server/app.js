@@ -196,6 +196,7 @@ app.get('/api/history/:id', async (req, res) => {
 })
 
 app.get('/sw.js', (req, res) => {
+  res.set('Content-Type', 'application/javascript')
   res.sendFile(path.join(__dirname, 'sw.js'));
 });
 
