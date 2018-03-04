@@ -59,7 +59,7 @@ export default {
 
 .back__btn
   position: absolute
-  bottom: $space--l
+  bottom: $space--m
   left: 50%
   transform: translateX(-50%)
 

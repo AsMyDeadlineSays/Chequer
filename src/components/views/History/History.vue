@@ -1,8 +1,11 @@
 <template>
   <ui-view class="view">
     <div class="expense-col">
-      <div v-for="cat in categories" :key="cat"
-           :class="['color-desc', toClass(cat)]"
+      <div v-for="cat in categoriesOrder" :key="cat"
+           :class="['color-desc', toClass(cat), {
+             'color-desc--active': cat === currentCategory
+           }]"
+           :style="{flex: categories[cat]}"
            @click="setCurrent(cat)" />
     
       <div class="gap" />
@@ -37,32 +40,59 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import UiHeading from '@/src/components/core/Heading/Heading.vue'
 import UiButton from '@/src/components/core/Button/Button.vue'
 import UiView from '@/src/components/core/View/View.vue'
 import IconBack from 'vue-material-design-icons/arrow-left.vue'
 
 
+const testData = [{
+  value: 'some 1',
+  tag: 0,
+  price: 1500
+}, {
+  value: 'some 2',
+  tag: 8,
+  price: 500
+}, {
+  value: 'some 3',
+  tag: 0,
+  price: 99
+}, {
+  value: 'some 1',
+  tag: 0,
+  price: 220
+}]
+
 
 export default {
 
+  created() {
+    this.$store.commit('history/set', testData)
+  },
+
   data() {
     return {
-      categories: [
+      categoriesOrder: [
         0, 1, 7, 8,
         3, 4, 6, 2,
         9, 5, 10
       ],
-      currentCategory: 0
+      currentCategory: undefined
     }
   },
 
   computed: {
+    ...mapState({
+      categories: state => state.history.categories
+    }), 
     expenses() {
       const items = this.$store.state.history.items
-      
+
       if(this.currentCategory !== undefined) {
-        // return items.filter(x => x.category === this.currentCategory)
+        return items.filter(x => x.tag === this.currentCategory)
       }
 
       return items
@@ -101,6 +131,9 @@ export default {
       }[categoryNumber]
     },
     setCurrent(categoryNumber) {
+      if(categoryNumber === this.currentCategory) {
+        return this.currentCategory = undefined
+      }
       this.currentCategory = categoryNumber
     }
   },
@@ -138,9 +171,9 @@ export default {
   width: $space--l
   height: $space--l
 
-  transition: $transition--m
-  &:hover
-    transform: scaleX(1.25)
+  transition: $transition--l
+  &--active
+    box-shadow: inset 0 0 0 4px $color--white
 
 .meat
   color: $color--meat
@@ -187,7 +220,7 @@ export default {
   background: $color--juice
 
 .gap
-  flex: 1
+  margin-bottom: $space--m
 
 // top
 .current

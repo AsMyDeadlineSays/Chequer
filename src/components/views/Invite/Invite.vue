@@ -53,8 +53,9 @@ export default {
 <style scoped lang="sass">
 @import "~@/src/utils/vars.sass"
 
-.view
+div.view
   align-items: center
+  padding: $space--l
 
 .title
   margin-bottom: $space--l

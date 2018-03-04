@@ -22,7 +22,7 @@ export default {
   flex-direction: column
   width: 100%
   min-height: 100vh
-  padding: $space--l
+  padding: $space--m
   background: $color--main
 
 .black

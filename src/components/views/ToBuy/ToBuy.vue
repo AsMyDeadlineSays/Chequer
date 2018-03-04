@@ -1,9 +1,11 @@
 <template>
   <ui-view class="view">
     <div>
-      <to-buy-item v-for="item in items" :key="item.value"
-                   v-bind="item"
-                   @click="bought(item)" />
+      <div class="items">
+        <to-buy-item v-for="item in items" :key="item.value"
+                     v-bind="item"
+                     @click="bought(item)" />
+      </div>
       
       <div class="new-item">
         <input type="text" placeholder="Молоко" class="new-item__value"
@@ -123,10 +125,12 @@ export default {
   display: flex
   justify-content: space-between
 
+.items
+  padding: 0 $space--m
+
 .new-item
   display: flex
-  width: calc(100% + #{$space--m * 2})
-  margin: 0 0-$space--m
+  width: 100%
   margin-bottom: $space--m
   background: $darken
   border-radius: $border-radius--m
