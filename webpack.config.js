@@ -103,10 +103,14 @@ module.exports = env => {
         minimize: true
       }),
       new WebpackChunkHashPlugin({algorithm: 'md5'}),
-      // new CopyWebpackPlugin([{
-      //   from: path.resolve(__dirname, './static'),
-      //   to: path.join(config.output.path, 'static')
-      // }]),
+      new CopyWebpackPlugin([{
+        from: path.resolve(__dirname, './src/icons'),
+        to: path.join(config.output.path, 'static')
+      }]),
+      new CopyWebpackPlugin([{
+        from: path.resolve(__dirname, './src/manifest.json'),
+        to: path.join(config.output.path, 'static')
+      }]),
       // new ImageminPlugin({ test: /\.(jpe?g|png)$/i }),
     ])
   }
