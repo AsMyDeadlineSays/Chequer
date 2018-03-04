@@ -55,7 +55,7 @@ import IconReceipt from 'vue-material-design-icons/receipt.vue'
 
 export default {
   created() {
-    this.$store.dispatch('toBuy/get')
+    this.get()
   },
   
   data() {
@@ -90,9 +90,18 @@ export default {
       this.newItemAmount = ''
     },
 
+    get() {
+      if(this.$store.family === 'new') {
+        setTimeout(this.get, 500)
+      }
+      else this.$store.dispatch('toBuy/get')
+    },
+
     ...mapActions({
-      bought: 'toBuy/bought'
+      bought: 'toBuy/bought',
     })
+
+
   },
 
   components: {
