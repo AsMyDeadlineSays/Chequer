@@ -162,3 +162,7 @@ ENV/
 server/db/
 
 ml/classifier\.pk
+
+server/list\.txt
+
+server/config\.js
