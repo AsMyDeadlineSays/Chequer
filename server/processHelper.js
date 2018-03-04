@@ -11,7 +11,7 @@ const createHelper = process => {
       lastPromise = self
 
       process.stdout.on('data', data => {
-        console.log('helper got', data.toString())
+        //console.log('helper got', data.toString())
         resolve(data.toString())
       })
 

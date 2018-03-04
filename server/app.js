@@ -75,7 +75,7 @@ app.get('/user-list', async (req, res) => {
 
 app.put('/api/family/', async (req, res) => {
   console.log('/api/family')
-  const newFamily = new Family({history: []})
+  const newFamily = new Family({history: [], toBuy: []})
   try{
     await newFamily.save()
     //console.log('new family with id ' + newFamily._id)
@@ -185,8 +185,8 @@ app.get('/api/to-buy/:family', async (req, res) => {
 })
 
 app.get('/api/history/:id', async (req, res) => {
-    const family = await Family.findOne({_id:id})
-    res.sendFile(family)
+    const family = await Family.findOne({_id:req.params.id})
+    res.send(family.history)
 })
 
 app.get('*', (req, res) => {

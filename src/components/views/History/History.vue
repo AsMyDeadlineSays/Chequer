@@ -7,9 +7,9 @@
            }]"
            :style="{flex: categories[cat]}"
            @click="setCurrent(cat)" />
-    
+
       <div class="gap" />
-      
+
       <router-link :to="'/'" replace>
         <ui-button icon> <icon-back class='back-icon' /> </ui-button>
       </router-link>
@@ -17,14 +17,14 @@
     </div>
 
     <div class="main">
-      <ui-heading level="2" class="title"> 
+      <ui-heading level="2" class="title">
         Топ трат
-        <span v-if="currentCategory !== undefined" 
+        <span v-if="currentCategory !== undefined"
               :class="[toClass(currentCategory), 'current']">
           на {{toRus(currentCategory)}}
         </span>
       </ui-heading>
-      
+
       <ol class="top">
         <li v-for="item in expenses" :key="item.value"
             class="top__item">
@@ -70,7 +70,7 @@ const testData = [{
 export default {
 
   created() {
-    this.$store.commit('history/set', testData)
+    this.$store.dispatch('history/get')
   },
 
   data() {
@@ -87,7 +87,7 @@ export default {
   computed: {
     ...mapState({
       categories: state => state.history.categories
-    }), 
+    }),
     expenses() {
       const items = this.$store.state.history.items
 
