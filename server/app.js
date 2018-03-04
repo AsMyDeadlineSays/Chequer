@@ -24,9 +24,16 @@ const config = require('./config')
 //GLOBAL VARs
 const parse_script = 'parse_html.py'
 const file_list = 'list.txt'
+const ml = {
+  parse: null,
+  tag: null
+}
 
 //INIT
-setup().then(() => {
+setup().then(proc => {
+    ml.parse = proc[1]
+    ml.tag = proc[2]
+
     console.log('listening on port:', config.appPort)
     app.listen(config.appPort)
 })

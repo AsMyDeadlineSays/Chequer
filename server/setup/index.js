@@ -8,6 +8,18 @@ const setups = [
             prepare: [config.path.db],
             execute: [config.mongoUrl]
         }
+    }, {
+        funcs: require('./mlParse'),
+        args: {
+            prepare: [],
+            execute: []
+        }
+    }, {
+        funcs: require('./mlTag'),
+        args: {
+            prepare: [],
+            execute: []
+        }
     }
 ]
 
@@ -16,10 +28,14 @@ const setupBackend = async () => {
     logger.log('\n ------ \nSetting up backend')
 
     await Promise.all(setups.map(setup => setup.funcs.prepare(logger, ...setup.args.prepare)))
-    await Promise.all(setups.map(setup => setup.funcs.execute(logger, ...setup.args.execute)))
+    const processes = await Promise.all(setups.map(setup => setup.funcs.execute(logger, ...setup.args.execute)))
+
+    process.on('SIGINT', () => {
+        setTimeout(process.exit(), 15)
+    })
 
     logger.log('Setup Sucessful\n ------ \n')
-    return
+    return processes
 }
 
 module.exports = setupBackend

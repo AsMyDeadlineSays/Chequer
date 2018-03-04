@@ -23,7 +23,7 @@ const setupDB = (logger, dbUrl) => new Promise((resolve, reject) => {
         if(data.indexOf('waiting for connections') !== -1) {
             mongoose.connect(dbUrl)
             logger.log('db ok \n')
-            resolve()
+            resolve(db)
         }
     })
 
@@ -36,7 +36,7 @@ const setupDB = (logger, dbUrl) => new Promise((resolve, reject) => {
         if(code === 48 || code === 100) {
             mongoose.connect(dbUrl)
             logger.log('db ok \n')
-            resolve()
+            resolve(db)
         }
         else
             reject(code)
@@ -44,7 +44,6 @@ const setupDB = (logger, dbUrl) => new Promise((resolve, reject) => {
 
     process.on('SIGINT', () => {
         db.kill('SIGINT')
-        process.exit();
     })
 })
 
