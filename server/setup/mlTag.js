@@ -12,7 +12,7 @@ const setupMLTag = (logger) => new Promise((resolve, reject) => {
   const tag = spawn('python3', [path.join(config.path.root, '..', 'ml', 'predict.py')])
 
   tag.stdin.setEncoding('utf-8')
-  tag.stdout.on('data', (data) => {
+  tag.stdout.once('data', (data) => {
     if(up) return
     if(data.indexOf('up') !== -1) {
       up = true
@@ -21,17 +21,17 @@ const setupMLTag = (logger) => new Promise((resolve, reject) => {
     }
   })
 
-  tag.stderr.on('data', (data) => {
+  tag.stderr.once('data', (data) => {
     if(up) return
     logger.error(`ML Tag stderr: ${data}`)
     reject(data)
   })
 
-  tag.on('close', (code) => {
+  tag.once('close', (code) => {
     reject(code)
   })
 
-  process.on('SIGINT', () => {
+  process.once('SIGINT', () => {
     tag.stdin.write('-1')
     tag.stdin.end()
     tag.kill('SIGINT')

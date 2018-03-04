@@ -13,7 +13,7 @@ const setupMLParse = (logger) => new Promise((resolve, reject) => {
   const parse = spawn('python3', [path.join(config.path.root, 'parse_html.py')])
 
   parse.stdin.setEncoding('utf-8')
-  parse.stdout.on('data', (data) => {
+  parse.stdout.once('data', (data) => {
     if(up) return
     if(data.indexOf('up') !== -1) {
       up = true
@@ -22,17 +22,17 @@ const setupMLParse = (logger) => new Promise((resolve, reject) => {
     }
   })
 
-  parse.stderr.on('data', (data) => {
+  parse.stderr.once('data', (data) => {
     if(up) return
     logger.error(`ML PARSE stderr: ${data}`)
     reject(data)
   })
 
-  parse.on('close', (code) => {
+  parse.once('close', (code) => {
     reject(code)
   })
 
-  process.on('SIGINT', () => {
+  process.once('SIGINT', () => {
     parse.stdin.write('-1')
     parse.stdin.end()
     parse.kill('SIGINT')
