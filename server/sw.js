@@ -18,7 +18,16 @@ self.addEventListener('install', function(event) {
 // ServiceWorker's scope, and any request made within that
 // page
 self.addEventListener('fetch', function(event) {
-  event.respondWith(caches.match(event.request));
+  event.respondWith(
+    // First we look for something in the caches that
+    // matches the request
+    caches.match(event.request).then(function(response) {
+      // If we get something, we return it, otherwise
+      // it's null, and we'll pass the request to
+      // fetch, which will use the network.
+      return response || fetch(event.request);
+    })
+  )
 });
 
 
