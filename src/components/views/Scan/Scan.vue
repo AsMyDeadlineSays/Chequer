@@ -1,5 +1,6 @@
 <template>
   <ui-view black style="padding: 0" class="view">
+    {{parsed}} {{hydrated}}
     <qrcode-reader @decode="decode" :paused="parsed">
       
       <router-link :to="'/'" replace>
