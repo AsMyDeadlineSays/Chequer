@@ -19,6 +19,7 @@ export const add = ({commit, state, rootState}, {value, amount, measure}) => {
 
 
 export const get = ({commit, rootState}) => {
+  console.log('getting to-buy')
   return fetch('/api/to-buy/' + rootState.family)
           .then(res => res.json())
           .then(data => {
