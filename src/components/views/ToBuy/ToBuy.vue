@@ -125,7 +125,8 @@ export default {
 
 .new-item
   display: flex
-  width: 100%
+  width: calc(100% + #{$space--m * 2})
+  margin: 0 0-$space--m
   margin-bottom: $space--m
   background: $darken
   border-radius: $border-radius--m
