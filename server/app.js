@@ -113,12 +113,14 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
     return;
   }
   let family = undefined
-  try{
-    family = await Family.find({id:req.body.family})
+  try {
+    console.log(req.body)
+    family = await Family.findOne({_id: req.body.family})
   } catch(err){
-      console.error('SHIT COMES NEXT')
-      console.log(err)
+      console.error('SHIT COMES NEXT', err)
   }
+
+
   const list = await family.toBuy.map(x => x.value)
   var listForFile = "";
 
@@ -133,16 +135,22 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
       console.log(err)
     }
   }
-  await writeToFile(file_list, listForFile)
 
-  const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
+  try {
+    await writeToFile(file_list, listForFile)
 
-  const pythonScript = async () => {
-    const {stdout, stderr} = await bash("python3 parse_html.py --url '"+url+"'"+" --file '" + file_list + "''")
-    //scructure: [check, [newToBuyList]]
-    return JSON.parse(stdout)
+    const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
+
+    const pythonScript = async () => {
+      const {stdout, stderr} = await bash("python3 parse_html.py --url '"+url+"'"+" --file '" + file_list + "''")
+      //scructure: [check, [newToBuyList]]
+      return JSON.parse(stdout)
+    }
+    let output = await pythonScript()
+  } catch(err){
+    console.error('SHIT COMES NEXT 2', err)
   }
-  let output = pythonScript()
+
   let history = output[0]
   let newToBuy = output[1]
   await toBuySynchronize(req.body.family, newToBuy)
@@ -172,7 +180,6 @@ app.post('/api/to-buy', async (req, res) => { //req.body.family req.body.list
 })
 
 app.get('*', (req, res) => {
-  console.log('*')
   res.sendFile(path.join(root, 'dist/index.html'));
 });
 

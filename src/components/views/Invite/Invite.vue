@@ -76,14 +76,22 @@ export default {
 .link-manual
   box-sizing: border-box
   width: 100%
-  max-width: 296px
-  padding: $space--s
+  max-width: 600px
+  height: $space--xl
+  line-height: $space--xl
+  padding: 0 $space--m
+  white-space: nowrap
   background: $darken
   border-radius: $border-radius--m
+  text-align: center
 
 .gap
   flex: 1
 
 .back-icon
   fill: $color--accent
+
+@media (max-width: 600px)
+  .link-manual
+    overflow-x: scroll
 </style>
