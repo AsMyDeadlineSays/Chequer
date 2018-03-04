@@ -15,6 +15,7 @@ export const set = (state, data) => {
   })
 
   const items = Object.values(dataMap)
+  items.forEach(x => x.spent = Math.round(x.spent))
   items.sort((a, b) => {
     return b.spent - a.spent
   })
