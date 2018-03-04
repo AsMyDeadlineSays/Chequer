@@ -1,3 +1,3 @@
 export const familyLink = state => {
-  return 'fb.v-trof.ru/family/join/' + state.family
+  return 'pb.v-trof.ru/family/join/' + state.family
 }

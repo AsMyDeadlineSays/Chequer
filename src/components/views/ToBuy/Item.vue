@@ -16,6 +16,8 @@ export default {
 
 
 .to-buy-item
+  cursor: pointer
+
   box-sizing: border-box
   height: $space--xl
   width: 100%

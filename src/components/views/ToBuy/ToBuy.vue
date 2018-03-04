@@ -8,7 +8,7 @@
       <div class="new-item">
         <input type="text" placeholder="Молоко" class="new-item__value"
               @keyup.enter="add" v-model="newItem" />
-        <ui-button icon class="new-item__add">
+        <ui-button icon class="new-item__add" @click="add">
           <icon-add class="svg" />
         </ui-button>
       </div>
