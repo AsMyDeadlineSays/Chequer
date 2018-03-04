@@ -1,8 +1,4 @@
 export const set = (state, data) => {
-  data.sort((a, b) => {
-    return a.price > b.price
-  })
-
   const dataMap = {}
   const categories = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -17,8 +13,12 @@ export const set = (state, data) => {
 
     categories[data.tag] += data.price
   })
-  console.log(categories, dataMap, data)
 
-  state.items = Object.values(dataMap)
+  const items = Object.values(dataMap)
+  items.sort((a, b) => {
+    return b.spent - a.spent
+  })
+
+  state.items = items
   state.categories = categories
 }
