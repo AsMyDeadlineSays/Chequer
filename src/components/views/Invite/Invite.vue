@@ -1,11 +1,11 @@
 <template>
   <ui-view class="view"> 
     <ui-heading level="2" class="title"> 
-      Добавить девайс \ члена семьи 
+      Добавить члена семьи / новый девайс 
     </ui-heading>
     
     <div class="qr-card">
-      <qr-code :text="link" class="qr-card__code" :size="128" />
+      <qr-code :text="link" class="qr-card__code" :size="160" />
     </div>
 
     <div class="tip">
@@ -55,10 +55,11 @@ export default {
 
 div.view
   align-items: center
-  padding: $space--l
+  padding: $space--m
 
 .title
-  margin-bottom: $space--l
+  margin-bottom: $space--m
+  text-align: center
 
 .qr-card
   align-self: center
