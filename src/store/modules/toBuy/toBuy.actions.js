@@ -27,7 +27,7 @@ export const get = ({commit, rootState}) => {
 }
 
 
-export const bought = ({commit}, boughtItems) => {
+export const bought = ({commit, state, rootState}, boughtItems) => {
   commit('bought', boughtItems)
 
   fetch('/api/to-buy/', {
