@@ -22,6 +22,6 @@ export const get = ({commit, rootState}) => {
   return fetch('/api/to-buy/' + rootState.family)
           .then(res => res.json())
           .then(data => {
-            data.forEach(item => commit('set', item))
+            commit('set', data)
           })
 }
