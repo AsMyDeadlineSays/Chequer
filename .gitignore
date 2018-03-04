@@ -160,3 +160,5 @@ ENV/
 .mypy_cache/
 
 server/db/
+
+ml/classifier\.pk

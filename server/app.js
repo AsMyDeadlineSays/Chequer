@@ -135,7 +135,7 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
 
   const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
-  const pythonScript = () => new Promise((resolve, reject) => {
+  const pythonScriptParse = () => new Promise((resolve, reject) => {
     const parser = bash('python3', ['parse_html.py',
      `--url`, `${url}`, `--file`, `${file_list}`])
     //scructure: [check, [newToBuyList]]
@@ -149,15 +149,43 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
     })
   })
 
-  let output = await pythonScript()
+  const pythonScriptPredict = (position) => new Promise((resolve, reject) => {
+    console.log([path.join(root, 'ml/predict.py'), position])
+    const parser = bash('python3', [path.join(root, 'ml/predict.py'), position])
 
-  let time = output.time
-  let history = output.bought
-  let newToBuy = output.newToBuy.map(x => ({value: x, amount: 1, price: ""}))
+    parser.stdout.on('data', (data) => {
+      console.log(data.toString())
+      resolve(data.toString())
+    })
 
+    parser.stderr.on('error', (data) => {
+      reject(data)
+    })
+
+    parser.on('close', (code) => {
+      console.log('ec', code)
+      //reject('ec', code)
+    })
+  })
+
+  let output = await pythonScriptParse()
+
+  const time = output.time
+  const tagPromises = output.bought.map(x => pythonScriptPredict(x.value))
+  const tags = await Promise.all(tagPromises)
+  const history = output.bought
+                    .map((x, idx) => Object.assign({}, x, {tag: tags[idx]}))
+                    .map(x => {
+                      x.price = parseFloat(x.price)
+                      return x
+                    })
+
+  const newToBuy = output.newToBuy.map(x => ({value: x, amount: 1, price: "", tag: ""}))
+
+  console.log('history', history)
   family.toBuy = newToBuy
 
-  for(var i = 0; i < history.length; i++) family.history.push(history[i])
+  history.forEach(x => family.history.push(x))
 
   try{
     await family.save()
@@ -165,7 +193,7 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
     console.error(err)
   }
 
-  res.send(history)
+  res.send({})
   console.log('end')
 })
 
@@ -187,6 +215,11 @@ app.get('/api/to-buy/:family', async (req, res) => {
     const family = await Family.findOne({_id: req.params.family})
     console.log(family)
     res.send(family.toBuy)
+})
+
+app.get('/api/history/:id', async (req, res) => {
+    const family = await Family.findOne({_id:id})
+    res.sendFile(family)
 })
 
 app.get('*', (req, res) => {

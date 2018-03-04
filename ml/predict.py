@@ -8,7 +8,8 @@ args = sys.argv
 
 to_pred = args[1]
 
-f = open('classifier.pk', 'rb')
+f = open('/home/svyatoslav/Foodhack/ml/classifier.pk', 'rb')
+
 clf = pickle.load(f)
 
 print(clf.predict([to_pred])[0])

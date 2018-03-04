@@ -1,8 +1,8 @@
 const path = require('path')
 //port 8085
 const config = {
-    mongoUrl: 'mongodb://localhost:27017/foodhack',
-    appPort: 8085,
+    mongoUrl: 'mongodb://localhost:27017/test',
+    appPort: 3000,
     appHost: 'sci.v-trof.ru',
 
     secret: 'tinderFTW',

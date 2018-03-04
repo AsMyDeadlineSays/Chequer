@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const oneBuy = new mongoose.Schema({
   value: String,
   amount: String,
-  price: String
+  price: String,
+  tag: String
 })
 
 const familySchema = new mongoose.Schema({
