@@ -18,7 +18,7 @@ def check(from_card, bill):
     """
 
     for i, position in enumerate(bill):
-        if stem.stemWord(from_card.lower()) in list(map(lambda s: stem.stemWord((s.lower())), 
+        if stem.stemWord(from_card.lower()) in list(map(lambda s: stem.stemWord((s.lower())),
                                                 position.split())):
             return i
     return -1
@@ -120,5 +120,10 @@ if __name__ == '__main__':
     # parser.add_argument('--file', type=str)
     print('up')
     while True:
-        url, file_name = input().split() 
-        main(url, file_name)
+        try:
+            url, file_name = input().split()
+            main(url, file_name)
+        except:
+            import sys
+            raise BaseException('Этот тип чека не поддерживается')
+            continue

@@ -132,8 +132,11 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
   const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
 
-
-  const parseData = await ml.parse(url + ' ' + file_list)
+  try{
+    const parseData = await ml.parse(url + ' ' + file_list)
+  } catch(err){
+    console.log(err)
+  }
 
   const output = JSON.parse(parseData)
 

@@ -25,8 +25,8 @@ const createHelper = process => {
         reject(code)
       })
 
-      process.stdin.write(input)
-      process.stdin.end()
+      process.stdin.write(input+'\n')
+      //process.stdin.end()
     })
 
     return self
