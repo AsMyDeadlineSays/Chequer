@@ -8,7 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const OfflinePlugin = require('offline-plugin')
+// const OfflinePlugin = require('offline-plugin')
 
 
 const cssLoader = ExtractTextPlugin.extract([
