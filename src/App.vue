@@ -21,7 +21,11 @@ body, html
   margin: 0
   height: 100%
 
-#app 
+#app
+  display: flex
+  align-items: center
+  justify-content: center
+  
   height: 100%
   width: 100vw
   
