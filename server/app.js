@@ -200,6 +200,11 @@ app.get('/sw.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'sw.js'));
 });
 
+app.get('/manifest.webmanifest', (req, res) =>{
+  res.set('Content-Type', 'application/json')
+  res.sendFile(path.join(root, 'dist/static/manifest.json'))
+})
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(root, 'dist/index.html'));
 });
