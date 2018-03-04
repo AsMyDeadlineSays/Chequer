@@ -5,8 +5,9 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const pythonShell = require('python-shell')
 const util = require('util')
-const bash = util.promisify(require('child_process').exec)
+const bash = require('child_process').spawn
 const fse = require('fs-extra')
+//const cookieParser = require('cookie-parser')
 
 
 //REQUIRES LOCAL
@@ -39,13 +40,18 @@ const static_dir = path.join(root, 'dist', 'static')
 
 app.use('/static/', express.static(static_dir));
 app.use(bodyParser.json())
+//app.use(cookieParser())
 
 const toBuySynchronize = async (familyId, list) => {
-  const family = await Family.find({id:familyId})
+  const family = await Family.findOne({_id:familyId})
+
+  console.log(typeof list, list)
+
   family.toBuy = list
-  family.save((err) => {
+  await family.save((err) => {
     if(err) console.log(err)
   })
+  return family.toBuy;
 }
 
 //ROUTING
@@ -82,7 +88,8 @@ app.put('/api/family/', async (req, res) => {
   const newFamily = new Family({history: []})
   try{
     await newFamily.save()
-    res.send({id: newFamily.id})
+    console.log('new family with id ' + newFamily._id)
+    res.send({id: newFamily._id})
   } catch(err){
       console.log(err)
   }
@@ -90,18 +97,22 @@ app.put('/api/family/', async (req, res) => {
 })
 
 //post for production
-//get for test
-app.post('/api/family/merge', async (req, res) => { //req.body.from (and not now) req.body.to
-  console.log('/api/family/merge')
-  if(req.body.from /*&& req.body.to*/){
-    await Family.find({id: req.body.from}).remove().exec()
-    res.send('deleted '+req.body.from)
-    //const to = await Family.find({id: req.body.to})
-  }
-  console.log('end')
+// app.post('/api/family/merge', async (req, res) => { //req.body.from (and not now) req.body.to
+//   console.log('/api/family/merge')
+//   if(req.body.from /*&& req.body.to*/){
+//     await Family.findOne({_id: req.body.from}).remove().exec()
+//     res.send('deleted '+req.body.from)
+//     //const to = await Family.find({id: req.body.to})
+//   }
+//   console.log('end')
+// })
+
+app.get('/family/join/:id', async (req, res) => {
+    console.log('/api/family/join/:id')
+    res.cookie('family', req.params.id)
+    res.redirect('/')
 })
 
-//TODO: TEST THIS SHIT
 app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body.query
   console.log('/api/parse-receipt')
   if(!req.body.query){
@@ -120,12 +131,17 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
       console.error('SHIT COMES NEXT', err)
   }
 
-
-  const list = await family.toBuy.map(x => x.value)
+  let list = undefined;
+  try{
+    list = await family.toBuy.map(x => x.value)
+  }catch(err){
+    console.log(err)
+  }
   var listForFile = "";
-
-  for(var i = 0; i < list.length; i++){
-    listForFile += list[i] + "\n"
+  if(list){
+    for(var i = 0; i < list.length; i++){
+      listForFile += list[i] + "\n"
+    }
   }
 
   writeToFile = async (file, data) => {
@@ -136,32 +152,42 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
     }
   }
 
-  try {
-    await writeToFile(file_list, listForFile)
 
-    const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
+  await writeToFile(file_list, listForFile)
 
-    const pythonScript = async () => {
-      const {stdout, stderr} = await bash('python3', ['parse_html.py', `"${url}" --file "${file_list}"`])
-      //scructure: [check, [newToBuyList]]
-      return JSON.parse(stdout)
-    }
-    let output = await pythonScript()
-  } catch(err){
-    console.error('SHIT COMES NEXT 2', err)
-  }
+  const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
-  let history = output[0]
-  let newToBuy = output[1]
-  await toBuySynchronize(req.body.family, newToBuy)
+  const pythonScript = () => new Promise((resolve, reject) => {
+    const parser = bash('python3', ['parse_html.py',
+     `--url`, `${url}`, `--file`, `${file_list}`])
+    //scructure: [check, [newToBuyList]]
+    parser.stdout.on('data', (data) => {
+      data = data.toString()
+      resolve(JSON.parse(data))
+    })
 
-  for(var i = 0; i < family.length; i++){
-    await family.history.push({value: history.value, amount: history.amount, price: history.price})
-  }
-  await family.save((err) => {
-    if(err) console.log(err);
+    parser.stderr.on('error', (data) => {
+      reject(data)
+    })
   })
 
+  let output = await pythonScript()
+
+  let time = output.time
+  let history = output.bought
+  let newToBuy = output.newToBuy.map(x => ({value: x, amount: 1, price: ""}))
+
+  family.toBuy = newToBuy
+
+  for(var i = 0; i < history.length; i++) family.history.push(history[i])
+
+  try{
+    await family.save()
+  } catch(err){
+    console.error(err)
+  }
+
+  res.send(history)
   console.log('end')
 })
 
@@ -177,6 +203,12 @@ app.post('/api/to-buy', async (req, res) => { //req.body.family req.body.list
     }
     await toBuySynchronize(req.body.family, req.body.list)
     console.log('end')
+})
+
+app.get('/api/to-buy/:family', async (req, res) => {
+    const family = await Family.findOne({_id: req.params.family})
+    console.log(family)
+    res.send(family.toBuy)
 })
 
 app.get('*', (req, res) => {

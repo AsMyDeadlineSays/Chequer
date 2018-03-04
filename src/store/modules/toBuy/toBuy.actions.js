@@ -1,6 +1,6 @@
 export const add = ({commit, state, rootState}, {value, amount, measure}) => {
   commit('add', {
-    value, 
+    value,
     amount,
     measure
   })
@@ -10,9 +10,9 @@ export const add = ({commit, state, rootState}, {value, amount, measure}) => {
     headers: new Headers({
       'Content-Type': 'application/json',
     }),
-    body: JSON.stringify({ 
+    body: JSON.stringify({
       family: rootState.family,
-      list: state.items 
+      list: state.items
     })
   })
 }
@@ -24,4 +24,20 @@ export const get = ({commit, rootState}) => {
           .then(data => {
             commit('set', data)
           })
+}
+
+
+export const bought = ({commit, state, rootState}, boughtItems) => {
+  commit('bought', boughtItems)
+
+  fetch('/api/to-buy/', {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({
+      family: rootState.family,
+      list: state.items
+    })
+  })
 }
