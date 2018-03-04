@@ -12,7 +12,13 @@ const fse = require('fs-extra')
 //REQUIRES LOCAL
 const setup = require('./setup/index')
 const config = require('./config')
-
+// console.log('setting up a connection')
+// try{
+//   mongoose.connect('mongodb://localhost:27017/foodhack')
+//   console.log('connection is stable')
+// } catch(err){
+//   console.log(err)
+// }
 
 //GLOBAL VARs
 const parse_script = 'parse_html.py'
@@ -71,14 +77,16 @@ app.get('/user-list', async (req, res) => {
 //   console.log('end')
 // })
 
-app.put('/api/family/', (req, res) => {
+app.put('/api/family/', async (req, res) => {
   console.log('/api/family')
-  var newFamily = new Family({history: null})
-  newFamily.save((err) => {
-    if(err) console.log('Error while creating a user')
-  })
-  res.send({id: newFamily.id})
-  console.log('/api/family')
+  const newFamily = new Family({history: []})
+  try{
+    await newFamily.save()
+    res.send({id: newFamily.id})
+  } catch(err){
+      console.log(err)
+  }
+  console.log('end')
 })
 
 //post for production
@@ -86,7 +94,7 @@ app.put('/api/family/', (req, res) => {
 app.post('/api/family/merge', async (req, res) => { //req.body.from (and not now) req.body.to
   console.log('/api/family/merge')
   if(req.body.from /*&& req.body.to*/){
-    Family.find({id: req.body.from}).remove().exec()
+    await Family.find({id: req.body.from}).remove().exec()
     res.send('deleted '+req.body.from)
     //const to = await Family.find({id: req.body.to})
   }
@@ -111,7 +119,7 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
       console.error('SHIT COMES NEXT')
       console.log(err)
   }
-  const list = family.toBuy.map(x => x.value)
+  const list = await family.toBuy.map(x => x.value)
   var listForFile = "";
 
   for(var i = 0; i < list.length; i++){
@@ -125,7 +133,7 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
       console.log(err)
     }
   }
-  writeToFile(file_list, listForFile)
+  await writeToFile(file_list, listForFile)
 
   const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
@@ -137,19 +145,19 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
   let output = pythonScript()
   let history = output[0]
   let newToBuy = output[1]
-  toBuySynchronize(req.body.family, newToBuy)
+  await toBuySynchronize(req.body.family, newToBuy)
 
   for(var i = 0; i < family.length; i++){
-    family.history.push({value: history.value, amount: history.amount, price: history.price})
+    await family.history.push({value: history.value, amount: history.amount, price: history.price})
   }
-  family.save((err) => {
+  await family.save((err) => {
     if(err) console.log(err);
   })
 
   console.log('end')
 })
 
-app.post('/api/to-buy', (req, res) => { //req.body.family req.body.list
+app.post('/api/to-buy', async (req, res) => { //req.body.family req.body.list
     console.log('/api/to-buy')
     if(!req.body.family){
       console.log("no family")
@@ -159,7 +167,7 @@ app.post('/api/to-buy', (req, res) => { //req.body.family req.body.list
       console.log('no list')
       return;
     }
-    toBuySynchronize(req.body.family, req.body.list)
+    await toBuySynchronize(req.body.family, req.body.list)
     console.log('end')
 })
 
@@ -167,3 +175,5 @@ app.get('*', (req, res) => {
   console.log('*')
   res.sendFile(path.join(root, 'dist/index.html'));
 });
+
+//app.listen(3000, () => console.log('App listening on port 3000!'))

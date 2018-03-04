@@ -1,7 +1,7 @@
 const path = require('path')
 //port 8085
 const config = {
-    mongoUrl: 'mongodb://localhost:27017/foodhack',
+    mongoUrl: 'mongodb://localhost:27017/test',
     appPort: 3000,
     appHost: 'sci.v-trof.ru',
 
@@ -14,9 +14,9 @@ const config = {
     },
 
     OPTIONS: {
-    user: 'admin',
-    pass: 'admin123',
-    auth: {
+      user: 'admin',
+      pass: 'admin123',
+      auth: {
         authdb: 'foodhack'
       }
     },

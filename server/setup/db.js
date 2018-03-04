@@ -14,14 +14,14 @@ const preSetupDB = async (logger, dbPath) => {
 }
 
 
-const setupDB = (logger, dbUrl) => new Promise((resolve, reject) => {
+const setupDB = (logger, dbUrl, options) => new Promise((resolve, reject) => {
     logger.log('Checking db')
 
     const db = spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'db'])
 
     db.stdout.on('data', (data) => {
         if(data.indexOf('waiting for connections') !== -1) {
-            mongoose.connect(dbUrl)
+            mongoose.connect(dbUrl, options)
             logger.log('db ok \n')
             resolve()
         }
@@ -33,8 +33,8 @@ const setupDB = (logger, dbUrl) => new Promise((resolve, reject) => {
 
     db.on('close', (code) => {
         //this is pretty much already running
-        if(code === 48) {
-            mongoose.connect(dbUrl)
+        if(code === 48 || code === 100) {
+            mongoose.connect(dbUrl, options)
             logger.log('db ok \n')
             resolve()
         }
