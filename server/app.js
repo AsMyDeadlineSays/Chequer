@@ -7,22 +7,16 @@ const pythonShell = require('python-shell')
 const util = require('util')
 const bash = require('child_process').spawn
 const fse = require('fs-extra')
+const processHelper = require('./processHelper')
 //const cookieParser = require('cookie-parser')
 
 
 //REQUIRES LOCAL
 const setup = require('./setup/index')
 const config = require('./config')
-// console.log('setting up a connection')
-// try{
-//   mongoose.connect('mongodb://localhost:27017/foodhack')
-//   console.log('connection is stable')
-// } catch(err){
-//   console.log(err)
-// }
 
 //GLOBAL VARs
-const parse_script = 'parse_html.py'
+//const parse_script = 'parse_html.py'
 const file_list = 'list.txt'
 const ml = {
   parse: null,
@@ -31,8 +25,8 @@ const ml = {
 
 //INIT
 setup().then(proc => {
-    ml.parse = proc[1]
-    ml.tag = proc[2]
+    ml.parse = processHelper(proc[1])
+    ml.tag = processHelper(proc[2])
 
     console.log('listening on port:', config.appPort)
     app.listen(config.appPort)
@@ -52,7 +46,7 @@ app.use(bodyParser.json())
 const toBuySynchronize = async (familyId, list) => {
   const family = await Family.findOne({_id:familyId})
 
-  console.log(typeof list, list)
+  //console.log(typeof list, list)
 
   family.toBuy = list
   await family.save((err) => {
@@ -84,7 +78,7 @@ app.put('/api/family/', async (req, res) => {
   const newFamily = new Family({history: []})
   try{
     await newFamily.save()
-    console.log('new family with id ' + newFamily._id)
+    //console.log('new family with id ' + newFamily._id)
     res.send({id: newFamily._id})
   } catch(err){
       console.log(err)
@@ -100,6 +94,8 @@ app.get('/family/join/:id', async (req, res) => {
 
 app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body.query
   console.log('/api/parse-receipt')
+
+  //VALIDATION
   if(!req.body.query){
     console.log('no query')
     return;
@@ -108,20 +104,13 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
     console.log('no family')
     return;
   }
-  let family = undefined
-  try {
-    console.log(req.body)
-    family = await Family.findOne({_id: req.body.family})
-  } catch(err){
-      console.error('SHIT COMES NEXT', err)
-  }
 
-  let list = undefined;
-  try{
-    list = await family.toBuy.map(x => x.value)
-  }catch(err){
-    console.log(err)
-  }
+  //DB FIND
+  const family = await Family.findOne({_id: req.body.family})
+
+  //PREPATING TXT
+  const list = await family.toBuy.map(x => x.value)
+
   var listForFile = "";
   if(list){
     for(var i = 0; i < list.length; i++){
@@ -142,44 +131,16 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
 
   const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
 
-  const pythonScriptParse = () => new Promise((resolve, reject) => {
-    const parser = bash('python3', ['parse_html.py',
-     `--url`, `${url}`, `--file`, `${file_list}`])
-    //scructure: [check, [newToBuyList]]
-    parser.stdout.on('data', (data) => {
-      data = data.toString()
-      resolve(JSON.parse(data))
-    })
 
-    parser.stderr.on('error', (data) => {
-      reject(data)
-    })
-  })
 
-  const pythonScriptPredict = (position) => new Promise((resolve, reject) => {
-    console.log([path.join(root, 'ml/predict.py'), position])
-    const parser = bash('python3', [path.join(root, 'ml/predict.py'), position])
+  const parseData = await ml.parse(url + ' ' + file_list)
 
-    parser.stdout.on('data', (data) => {
-      console.log(data.toString())
-      resolve(data.toString())
-    })
-
-    parser.stderr.on('error', (data) => {
-      reject(data)
-    })
-
-    parser.on('close', (code) => {
-      console.log('ec', code)
-      //reject('ec', code)
-    })
-  })
-
-  let output = await pythonScriptParse()
+  const output = JSON.parse(parseData)
 
   const time = output.time
-  const tagPromises = output.bought.map(x => pythonScriptPredict(x.value))
-  const tags = await Promise.all(tagPromises)
+  const tagsStr = await ml.tag(output.bought.map(x => x.value).join(' | '))
+  const tags = tagsStr.replace('\n', '').split(' ').map(x => parseInt(x))
+
   const history = output.bought
                     .map((x, idx) => Object.assign({}, x, {tag: tags[idx]}))
                     .map(x => {
@@ -187,11 +148,10 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
                       return x
                     })
 
+
   const newToBuy = output.newToBuy.map(x => ({value: x, amount: 1, price: "", tag: ""}))
 
-  console.log('history', history)
   family.toBuy = newToBuy
-
   history.forEach(x => family.history.push(x))
 
   try{
@@ -220,7 +180,7 @@ app.post('/api/to-buy', async (req, res) => { //req.body.family req.body.list
 
 app.get('/api/to-buy/:family', async (req, res) => {
     const family = await Family.findOne({_id: req.params.family})
-    console.log(family)
+    //console.log(family)
     res.send(family.toBuy)
 })
 

@@ -1,7 +1,7 @@
 import pickle
 import os
 
-f = open(os.path.dirname('predict.py')+'classifier.pk', 'rb')
+f = open(os.path.realpath(__file__)[:-10] + 'classifier.pk', 'rb')
 clf = pickle.load(f)
 a = 0
 print('up')

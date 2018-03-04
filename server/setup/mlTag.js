@@ -1,5 +1,6 @@
 const spawn  = require('child_process').spawn
-
+const config = require('../config')
+const path = require('path')
 
 const preSetupMLTag = async (logger) => {}
 
@@ -8,8 +9,8 @@ const setupMLTag = (logger) => new Promise((resolve, reject) => {
   let up = false
   logger.log('Checking mlTag')
 
-  const tag = spawn('python3', ['item Tag', ''])
-  
+  const tag = spawn('python3', [path.join(config.path.root, '..', 'ml', 'predict.py')])
+
   tag.stdin.setEncoding('utf-8')
   tag.stdout.on('data', (data) => {
     if(up) return
@@ -38,6 +39,6 @@ const setupMLTag = (logger) => new Promise((resolve, reject) => {
 })
 
 module.exports = {
-    prepare: preSetupMLParse,
-    execute: setupMLParse,
+    prepare: preSetupMLTag,
+    execute: setupMLTag,
 }
