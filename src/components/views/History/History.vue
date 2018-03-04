@@ -138,6 +138,10 @@ export default {
   width: $space--l
   height: $space--l
 
+  transition: $transition--m
+  &:hover
+    transform: scaleX(1.25)
+
 .meat
   color: $color--meat
   background: $color--meat
