@@ -92,7 +92,7 @@ export default {
 
     get() {
       if(this.$store.state.family === 'new') {
-        // console.log('delay')
+        console.log('delay')
         setTimeout(this.get, 500)
       } else {
         this.$store.dispatch('toBuy/get')
