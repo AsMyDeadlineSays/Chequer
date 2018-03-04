@@ -94,18 +94,23 @@ def main(config):
     positions = getPositions(page.content)[:-1]
     sums = getSums(page.content)
     counts = getCounts(page.content)
-    bill = []
+
+    new_card = update_card(card=card.copy(), bill=positions.copy())
+
+    bill = {'bought' : [],
+            'time' : time,
+            'newToBuy': new_card
+    }
+
     for i in range(len(positions)):
-        bill.append({
+        bill['bought'].append({
                     'value' : positions[i],
                     'amount' : counts[i],
                     'price' : sums[i]
         })
 
-    bill.append(time)
-    new_card = update_card(card=card, bill=positions)
-    bill.append(new_card)
     print(json.dumps(bill, ensure_ascii=False))
+    return 0
 
 
 
