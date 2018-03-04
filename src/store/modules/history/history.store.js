@@ -15,7 +15,8 @@ const store = {
     }, {
       value: 'Good thing',
       spent: 750
-    }]
+    }],
+    categories: []
   }),
   mutations,
   actions
