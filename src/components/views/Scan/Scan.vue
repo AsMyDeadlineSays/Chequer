@@ -21,6 +21,10 @@ import IconBack from 'vue-material-design-icons/arrow-left.vue'
 
 
 export default {
+  created() {
+    this.$store.dispatch('scan/reset')
+  },
+
   computed: {
     ...mapState({
       parsed: state => state.scan.parsed,

@@ -22,3 +22,8 @@ export const hydrate = ({ commit, rootState }, query) => new Promise((resolve, r
     .then(resolve)
     .catch(reject)
 })
+
+
+export const reset = ({commit}) => {
+  commit('reset')
+}
