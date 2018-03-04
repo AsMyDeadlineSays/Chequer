@@ -2,6 +2,8 @@ import requests as re
 from bs4 import BeautifulSoup
 import argparse
 import json
+from datetime import datetime
+from time import mktime
 import Stemmer
 stem = Stemmer.Stemmer('russian')
 
@@ -71,6 +73,10 @@ def getCounts(html):
         i += 1
     return counts
 
+def getTime(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    return soup.find('span', id='fld_I3304D483A').get_text()
+
 def main(config):
     url = config.url
     file_name = config.file
@@ -79,6 +85,12 @@ def main(config):
         card = list(map(lambda s: s.replace('\n', ''), file.readlines()))
 
     page = re.get(url)
+
+    time_parse = getTime(page.content)
+    day, month, year = list(map(int, time_parse.split()[0].split('.')))
+    hour, minute = list(map(int, time_parse.split()[1].split(':')))
+    time = int(mktime(datetime(year, month, day, hour, minute).timetuple()))
+
     positions = getPositions(page.content)[:-1]
     sums = getSums(page.content)
     counts = getCounts(page.content)
@@ -90,10 +102,11 @@ def main(config):
                     'price' : sums[i]
         })
 
-
+    bill.append(time)
     new_card = update_card(card=card, bill=positions)
     bill.append(new_card)
     print(json.dumps(bill, ensure_ascii=False))
+
 
 
 if __name__ == '__main__':
