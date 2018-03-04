@@ -1,16 +1,9 @@
 <template>
   <ui-view class="view">
     <div class="expense-col">
-      <div class="color-desc meat" />
-      <div class="color-desc milk" />
-      <div class="color-desc sweet" />
-      <div class="color-desc alko" /> 
-      <div class="color-desc fish" />
-      <div class="color-desc semi" />
-      <div class="color-desc conserve" />
-      <div class="color-desc veget" />
-      <div class="color-desc grocery" />
-      <div class="color-desc rest" />
+      <div v-for="cat in categories" :key="cat"
+           :class="['color-desc', toClass(cat)]"
+           @click="setCurrent(cat)" />
     
       <div class="gap" />
       
@@ -55,6 +48,11 @@ export default {
 
   data() {
     return {
+      categories: [
+        0, 1, 7, 8,
+        3, 4, 6, 2,
+        9, 5, 10
+      ],
       currentCategory: 0
     }
   },
@@ -74,15 +72,36 @@ export default {
   methods: {
     toRus(categoryNumber) {
       return {
-        0: 'Мясо',
-        1: 'Молочку',
+        0: 'мясо',
+        1: 'молочные продукты',
+        2: 'фрукты и овощи',
+        3: 'морепродукты',
+        4: 'полуфабрикаты',
+        5: 'бакалею',
+        6: 'консервы, масло, соусы',
+        7: 'сладости и хлеб',
+        8: 'алкоголь',
+        9: 'соки и напитки',
+        10: 'остальное'
       }[categoryNumber]
     },
     toClass(categoryNumber) {
       return {
         0: 'meat',
         1: 'milk',
+        2: 'grow',
+        3: 'fish',
+        4: 'semi',
+        5: 'grocery',
+        6: 'conserve',
+        7: 'sweet',
+        8: 'alko',
+        9: 'juice',
+        10: 'rest',
       }[categoryNumber]
+    },
+    setCurrent(categoryNumber) {
+      this.currentCategory = categoryNumber
     }
   },
 
@@ -124,7 +143,7 @@ export default {
   background: $color--meat
 
 .milk
-  color: $color--milk
+  color: darken($color--milk, 40%)
   background: $color--milk
 
 .alko
@@ -135,9 +154,9 @@ export default {
   color: $color--fish
   background: $color--fish
 
-.veget
-  color: $color--veget
-  background: $color--veget
+.grow
+  color: $color--grow
+  background: $color--grow
 
 .conserve
   color: $color--conserve
@@ -158,6 +177,10 @@ export default {
 .grocery
   color: $color--grocery
   background: $color--grocery
+
+.juice
+  color: $color--juice
+  background: $color--juice
 
 .gap
   flex: 1
