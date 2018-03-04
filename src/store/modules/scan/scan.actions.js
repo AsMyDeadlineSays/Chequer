@@ -16,6 +16,7 @@ export const hydrate = ({ commit, rootState }, query) => new Promise((resolve, r
   })
     .then(req => req.json())
     .then(data => {
+      commit('setReceipt', data)
       console.log(data)
     })
     .then(resolve)
