@@ -1,6 +1,5 @@
 import pickle
 import os
-from json import dumps
 
 f = open(os.path.dirname('predict.py')+'classifier.pk', 'rb')
 clf = pickle.load(f)
