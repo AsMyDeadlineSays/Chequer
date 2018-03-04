@@ -1,5 +1,7 @@
 export const set = (state, data) => {
-  data.sort()
+  data.sort((a, b) => {
+    return a.price > b.price
+  })
 
   const dataMap = {}
   const categories = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

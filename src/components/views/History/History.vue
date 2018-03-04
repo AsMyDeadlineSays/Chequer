@@ -228,7 +228,7 @@ export default {
 
 .top
   margin: $space--s 0
-  padding-left: $space--m
+  padding-left: $space--l
 
 .top__item
   padding: $space--s
