@@ -72,17 +72,6 @@ app.get('/user-list', async (req, res) => {
   console.log('end')
 })
 
-//DEBUG
-// app.get('/api/family/', (req, res) => {
-//   console.log('/api/family/')
-//   var newFamily = new Family({history: null})
-//   res.send('new family ' + newFamily.id)
-//   newFamily.save((err) => {
-//     if(err) console.log('Error while creating a user')
-//   })
-//   console.log('end')
-// })
-
 app.put('/api/family/', async (req, res) => {
   console.log('/api/family')
   const newFamily = new Family({history: []})
@@ -95,17 +84,6 @@ app.put('/api/family/', async (req, res) => {
   }
   console.log('end')
 })
-
-//post for production
-// app.post('/api/family/merge', async (req, res) => { //req.body.from (and not now) req.body.to
-//   console.log('/api/family/merge')
-//   if(req.body.from /*&& req.body.to*/){
-//     await Family.findOne({_id: req.body.from}).remove().exec()
-//     res.send('deleted '+req.body.from)
-//     //const to = await Family.find({id: req.body.to})
-//   }
-//   console.log('end')
-// })
 
 app.get('/family/join/:id', async (req, res) => {
     console.log('/api/family/join/:id')
