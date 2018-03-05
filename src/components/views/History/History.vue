@@ -1,5 +1,25 @@
 <template>
   <ui-view class="view">
+    <div class="main">
+      <ol class="top">
+        <ui-heading level="2" class="title">
+          Топ трат
+          <span v-if="currentCategory !== undefined"
+                :class="[toClass(currentCategory), 'current']">
+            на {{toRus(currentCategory)}}
+          </span>
+        </ui-heading>
+        <li v-for="item in expenses" :key="item.value"
+            class="top__item">
+          {{item.value}}
+
+          <span class="top__item__spent">
+            {{item.spent}} ₽
+          </span>
+        </li>
+      </ol>
+    </div>
+
     <div class="expense-col">
       <div v-for="cat in categoriesOrder" :key="cat"
            :class="['color-desc', toClass(cat), {
@@ -14,27 +34,6 @@
         <ui-button icon> <icon-back class='back-icon' /> </ui-button>
       </router-link>
 
-    </div>
-
-    <div class="main">
-      <ui-heading level="2" class="title">
-        Топ трат
-        <span v-if="currentCategory !== undefined"
-              :class="[toClass(currentCategory), 'current']">
-          на {{toRus(currentCategory)}}
-        </span>
-      </ui-heading>
-
-      <ol class="top">
-        <li v-for="item in expenses" :key="item.value"
-            class="top__item">
-          {{item.value}}
-
-          <span class="top__item__spent">
-            {{item.spent}} ₽
-          </span>
-        </li>
-      </ol>
     </div>
   </ui-view>
 </template>
@@ -150,6 +149,9 @@ export default {
 <style scoped lang="sass">
 @import "~@/src/utils/vars.sass"
 
+.title
+  padding-left: $space--s
+
 // layout
 .view
   flex-direction: row
@@ -160,6 +162,7 @@ export default {
   margin-left: $space--m
 
 .expense-col
+  height: 100%
   display: flex
   flex-direction: column
 
@@ -228,7 +231,7 @@ export default {
 
 .top
   margin: $space--s 0
-  padding-left: $space--l
+  // padding-left: $space--l
 
 .top__item
   padding: $space--s
