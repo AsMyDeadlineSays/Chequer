@@ -30,14 +30,10 @@
            }]"
            :style="{flex: categories[cat]}"
            @click="setCurrent(cat)" />
-
-      <div class="gap" />
-
-      <router-link :to="'/'" replace>
-        <ui-button icon> <icon-back class='back-icon' /> </ui-button>
-      </router-link>
-
     </div>
+    <router-link :to="'/'" replace class="back-button">
+      <ui-button icon> <icon-back class='back-icon' /> </ui-button>
+    </router-link>
   </ui-view>
 </template>
 
@@ -224,4 +220,9 @@ export default {
 
 .top__item__spent
   float: right
+
+.back-button
+  position: fixed
+  left: $space--m
+  bottom: $space--m
 </style>
