@@ -75,8 +75,8 @@ def getCounts(html):
 
 def getTime(html):
     soup = BeautifulSoup(html, 'html.parser')
-    # return soup.find('span', id='fld_I3304D483A').get_text()
-    return ''
+    return soup.find('span', id='fld_I3304D483A').get_text()
+    # return ''
 
 def main(url, file_name):
     # url = config.url
@@ -87,10 +87,10 @@ def main(url, file_name):
 
     page = re.get(url)
 
-    time_parse = getTime(page.content)
+    # time_parse = getTime(page.content)
     day, month, year = list(map(int, time_parse.split()[0].split('.')))
     hour, minute = list(map(int, time_parse.split()[1].split(':')))
-    time = int(mktime(datetime(year, month, day, hour, minute).timetuple()))
+    # time = int(mktime(datetime(year, month, day, hour, minute).timetuple()))
 
     positions = getPositions(page.content)[:-1]
     sums = getSums(page.content)
