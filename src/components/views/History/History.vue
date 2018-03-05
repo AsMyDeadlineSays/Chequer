@@ -141,7 +141,7 @@ export default {
 .main
   flex: 1
   overflow-y: scroll
-  margin-left: $space--m
+  margin-right: $space--m
 
 .expense-col
   height: 100%
