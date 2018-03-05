@@ -11,13 +11,16 @@
         </ui-heading>
         <li v-for="item in expenses" :key="item.value"
             class="top__item">
-          {{item.value}}
+          {{item.value}} x {{item.amount}}
 
           <span class="top__item__spent">
             {{item.spent}} ₽
           </span>
         </li>
       </ol>
+      <div v-if="expenses.length === 0" class="message-empty"> 
+        Тут будет анализ ваших трат после первого отскнированного чека
+      </div>
     </div>
 
     <div class="expense-col">
@@ -47,27 +50,7 @@ import UiView from '@/src/components/core/View/View.vue'
 import IconBack from 'vue-material-design-icons/arrow-left.vue'
 
 
-const testData = [{
-  value: 'some 1',
-  tag: 0,
-  price: 1500
-}, {
-  value: 'some 2',
-  tag: 8,
-  price: 500
-}, {
-  value: 'some 3',
-  tag: 0,
-  price: 99
-}, {
-  value: 'some 1',
-  tag: 0,
-  price: 220
-}]
-
-
 export default {
-
   created() {
     this.$store.dispatch('history/get')
   },
@@ -151,6 +134,9 @@ export default {
 
 .title
   padding-left: $space--s
+
+.message-empty
+  padding-left: $space--s + $space--l
 
 // layout
 .view

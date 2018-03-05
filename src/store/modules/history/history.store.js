@@ -9,13 +9,7 @@ const store = {
   namespaced: true,
 
   state: () => ({
-    items: [{
-      value: 'Some thig',
-      spent: 9999
-    }, {
-      value: 'Good thing',
-      spent: 750
-    }],
+    items: [],
     categories: []
   }),
   mutations,

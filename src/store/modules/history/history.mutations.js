@@ -6,10 +6,12 @@ export const set = (state, data) => {
     dataMap[data.value] = dataMap[data.value] || {
       value: data.value,
       tag: data.tag,
+      amount: 0,
       spent: 0
     }
 
     dataMap[data.value].spent += data.price
+    dataMap[data.value].amount += data.amount
 
     categories[data.tag] += data.price
   })

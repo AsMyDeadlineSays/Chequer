@@ -6,6 +6,7 @@ import App from '@/src/App.vue'
 import storeTemplate from '@/src/store/index.store'
 import routes from '@/src/router/index.routes'
 
+import './sw.js'
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
