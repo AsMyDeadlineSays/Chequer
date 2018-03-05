@@ -44,8 +44,15 @@ app.use(bodyParser.json())
 //app.use(cookieParser())
 
 const toBuySynchronize = async (familyId, list) => {
-  const family = await Family.findOne({_id:familyId})
-
+  let family = await Family.findOne({_id:familyId})
+  if(!family){
+    family = await new Family({history: [], toBuy: []})
+    try{
+      await family.save()
+    } catch(err){
+        console.log(err)
+    }
+  }
   //console.log(typeof list, list)
 
   family.toBuy = list
