@@ -99,7 +99,7 @@ def main(url, file_name):
     new_card = update_card(card=card.copy(), bill=positions.copy())
 
     bill = {'bought' : [],
-            'time' : time,
+            'time' : 'time',
             'newToBuy': new_card
     }
 
