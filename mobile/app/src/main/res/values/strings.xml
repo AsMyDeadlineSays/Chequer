@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">mobile</string>
+    <string name="title_share">Поделиться</string>
+    <string name="title_to_buy">Список покупок</string>
+    <string name="title_notifications">Отсканировать чек</string>
+</resources>
