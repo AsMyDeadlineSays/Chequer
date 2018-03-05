@@ -8,7 +8,7 @@ self.addEventListener('install', function(event) {
       return cache.addAll([
         '/',
         '/manifest.webmanifest',
-        '/static/app-8948eec0649881cf3cf8.js'
+        '/static/app-5af3ab9a88b4b0717690.js'
       ]);
     })
   );
@@ -19,18 +19,7 @@ self.addEventListener('install', function(event) {
 // page
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    // First we look for something in the caches that
-    // matches the request
-    caches.match(event.request).then(function(response) {
-      // If we get something, we return it, otherwise
-      // it's null, and we'll pass the request to
-      // fetch, which will use the network.
-      return new Promise((res, rej) => {
-        fetch(event.request)
-          .then(res)
-          .catch(res(response))
-      })
-    })
+    fetch(event.request).catch(() => caches.match(event.request))
   )
 });
 
