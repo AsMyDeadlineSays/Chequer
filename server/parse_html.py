@@ -88,8 +88,8 @@ def main(url, file_name):
     page = re.get(url)
 
     # time_parse = getTime(page.content)
-    day, month, year = list(map(int, time_parse.split()[0].split('.')))
-    hour, minute = list(map(int, time_parse.split()[1].split(':')))
+    # day, month, year = list(map(int, time_parse.split()[0].split('.')))
+    # hour, minute = list(map(int, time_parse.split()[1].split(':')))
     # time = int(mktime(datetime(year, month, day, hour, minute).timetuple()))
 
     positions = getPositions(page.content)[:-1]
