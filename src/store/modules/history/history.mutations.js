@@ -11,7 +11,7 @@ export const set = (state, data) => {
     }
 
     dataMap[data.value].spent += data.price
-    dataMap[data.value].amount += data.amount
+    dataMap[data.value].amount += parseFloat(data.amount)
 
     categories[data.tag] += data.price
   })
