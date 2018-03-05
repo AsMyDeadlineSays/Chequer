@@ -75,7 +75,8 @@ def getCounts(html):
 
 def getTime(html):
     soup = BeautifulSoup(html, 'html.parser')
-    return soup.find('span', id='fld_I3304D483A').get_text()
+    # return soup.find('span', id='fld_I3304D483A').get_text()
+    return ''
 
 def main(url, file_name):
     # url = config.url
