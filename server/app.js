@@ -69,6 +69,8 @@ const toBuySynchronize = async (familyId, list) => {
 // /api/parse-receipt
 // /api/to-buy
 // *
+
+/*
 app.get('/user-list', async (req, res) => {
   console.log('/user-list')
   const users = await Family.find({})
@@ -79,6 +81,7 @@ app.get('/user-list', async (req, res) => {
   }, {}))
   console.log('end')
 })
+*/
 
 app.put('/api/family/', async (req, res) => {
   console.log('/api/family')

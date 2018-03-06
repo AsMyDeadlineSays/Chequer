@@ -1,4 +1,8 @@
 <resources>
+    <string name="shared_preferences_id">id</string>
+    <string name="shared_preferences_history">history</string>
+    <string name="shared_preferences_to_buy">to buy</string>
+    <string name="default_id">0</string>
     <string name="app_name">mobile</string>
     <string name="title_share">Поделиться</string>
     <string name="title_to_buy">Список покупок</string>
