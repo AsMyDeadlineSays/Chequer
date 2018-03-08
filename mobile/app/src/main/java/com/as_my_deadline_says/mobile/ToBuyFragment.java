@@ -29,7 +29,7 @@ public class ToBuyFragment extends DialogFragment implements TextView.OnEditorAc
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_to_buy_fragment, container);
-        mEditText = (EditText) view.findViewById(R.id.input_fragment);
+        mEditText = view.findViewById(R.id.input_fragment);
         getDialog().setTitle("Hello");
         mEditText.requestFocus();
         try {

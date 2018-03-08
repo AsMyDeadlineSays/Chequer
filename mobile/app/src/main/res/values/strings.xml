@@ -1,9 +1,10 @@
 <resources>
+    <string name="app_name">Cheque</string>
     <string name="shared_preferences_id">id</string>
     <string name="shared_preferences_history">history</string>
     <string name="shared_preferences_to_buy">to buy</string>
     <string name="default_id">0</string>
-    <string name="app_name">Cheque</string>
+    <string name="network_problem">Что-то пошло не так, попробуйте перезапустить приложение</string>
     <string name="title_share">Поделиться</string>
     <string name="title_to_buy">Список покупок</string>
     <string name="title_scan">Отсканировать чек</string>
