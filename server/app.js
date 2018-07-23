@@ -8,6 +8,7 @@ const util = require('util')
 const bash = require('child_process').spawn
 const fse = require('fs-extra')
 const processHelper = require('./processHelper')
+const utils = require('./utils')
 //const cookieParser = require('cookie-parser')
 
 
@@ -39,7 +40,7 @@ const app = express()
 const root = path.resolve(__dirname, '..')
 const static_dir = path.join(root, 'dist', 'static')
 
-app.use('/static/', express.static(static_dir));
+app.use('/static/', express.static(static_dir))
 app.use(bodyParser.json())
 //app.use(cookieParser())
 
@@ -59,7 +60,7 @@ const toBuySynchronize = async (familyId, list) => {
   await family.save((err) => {
     if(err) console.log(err)
   })
-  return family.toBuy;
+  return family.toBuy
 }
 
 //ROUTING
@@ -69,19 +70,6 @@ const toBuySynchronize = async (familyId, list) => {
 // /api/parse-receipt
 // /api/to-buy
 // *
-
-/*
-app.get('/user-list', async (req, res) => {
-  console.log('/user-list')
-  const users = await Family.find({})
-  console.log(users)
-  res.send(users.reduce((userMap, item) => {
-      userMap[item.id] = item;
-      return userMap;
-  }, {}))
-  console.log('end')
-})
-*/
 
 
 app.put('/api/family/', async (req, res) => {
@@ -110,65 +98,29 @@ app.post('/api/parse-receipt', async (req, res) => { //req.body.family, req.body
   //VALIDATION
   if(!req.body.query){
     console.log('no query')
-    return;
+    return
   }
   if(!req.body.family){
     console.log('no family')
-    return;
+    return
   }
 
   //DB FIND
   const family = await Family.findOne({_id: req.body.family})
 
-  //PREPATING TXT
   const list = await family.toBuy.map(x => x.value)
 
-  var listForFile = "";
-  if(list){
-    for(var i = 0; i < list.length; i++){
-      listForFile += list[i] + "\n"
-    }
-  }
+  const output = await utils.getReceiptContent(req.body.query)
+  const bought = output.bought.map(x => x.value)
 
-  writeToFile = async (file, data) => {
-    try{
-      await fse.outputFile(file, data)
-    } catch (err){
-      console.log(err)
-    }
-  }
-
-
-  await writeToFile(file_list, listForFile)
-
-  const url = 'http://receipt.taxcom.ru/v01/show?' + req.body.query
-
-  let parseData = undefined;
-  try{
-    parseData = await ml.parse(url + ' ' + file_list)
-  } catch(err){
-    console.log(err)
-    res.send({error: "bad receipt"})
-    return;
-  }
-
-  const output = JSON.parse(parseData)
-
-  const time = output.time
-  const tagsStr = await ml.tag(output.bought.map(x => x.value).join(' | '))
+  const tagsStr = await ml.tag(items.join(' | '))
   const tags = tagsStr.replace('\n', '').split(' ').map(x => parseInt(x))
 
   const history = output.bought
                     .map((x, idx) => Object.assign({}, x, {tag: tags[idx]}))
-                    .map(x => {
-                      x.price = parseFloat(x.price)
-                      return x
-                    })
 
 
-  const newToBuy = output.newToBuy.map(x => ({value: x, amount: 1, price: "", tag: ""}))
-
-  family.toBuy = newToBuy
+  family.toBuy = utils.removeFromToBuy(family.toBuy.map(x => x.value), bought)
   history.forEach(x => family.history.push(x))
 
   try{
@@ -185,11 +137,11 @@ app.post('/api/to-buy', async (req, res) => { //req.body.family req.body.list
     console.log('/api/to-buy')
     if(!req.body.family){
       console.log("no family")
-      return;
+      return
     }
     if(!req.body.list){
       console.log('no list')
-      return;
+      return
     }
     await toBuySynchronize(req.body.family, req.body.list)
     console.log('end')
@@ -208,8 +160,8 @@ app.get('/api/history/:id', async (req, res) => {
 
 app.get('/sw.js', (req, res) => {
   res.set('Content-Type', 'application/javascript')
-  res.sendFile(path.join(__dirname, 'sw.js'));
-});
+  res.sendFile(path.join(__dirname, 'sw.js'))
+})
 
 app.get('/manifest.webmanifest', (req, res) =>{
   res.set('Content-Type', 'application/json')
@@ -217,7 +169,5 @@ app.get('/manifest.webmanifest', (req, res) =>{
 })
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(root, 'dist/index.html'));
-});
-
-//app.listen(3000, () => console.log('App listening on port 3000!'))
+  res.sendFile(path.join(root, 'dist/index.html'))
+})

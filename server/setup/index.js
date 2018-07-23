@@ -9,12 +9,6 @@ const setups = [
             execute: [config.mongoUrl]
         }
     }, {
-        funcs: require('./mlParse'),
-        args: {
-            prepare: [],
-            execute: []
-        }
-    }, {
         funcs: require('./mlTag'),
         args: {
             prepare: [],
